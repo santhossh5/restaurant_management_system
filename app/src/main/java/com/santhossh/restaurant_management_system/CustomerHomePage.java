@@ -7,12 +7,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class CustomerHomePage extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
+    private Button btnCheckout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +29,17 @@ public class CustomerHomePage extends AppCompatActivity {
 
         TextView table_no = findViewById(R.id.TableNumber);
         table_no.setText("Table no: "+TableManager.getInstance().getTableNumber());
+
+        // Initialize the Button
+        btnCheckout = findViewById(R.id.btnCheckout);
+
+        btnCheckout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CustomerHomePage.this, CheckoutActivity.class);
+                startActivity(intent);
+            }
+                                       });
 
         // Initialize BottomNavigationView
         bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -55,8 +69,8 @@ public class CustomerHomePage extends AppCompatActivity {
                 } else if (itemId == R.id.action_order_status) {
                     // Handle order status click (e.g., show OrderStatusActivity)
                     Toast.makeText(CustomerHomePage.this, "Order Status Selected", Toast.LENGTH_SHORT).show();
-                    // Intent intentOrderStatus = new Intent(CustomerHomeActivity.this, OrderStatusActivity.class);
-                    // startActivity(intentOrderStatus);
+                     Intent intentOrderStatus = new Intent(CustomerHomePage.this, OrderStatusActivity.class);
+                     startActivity(intentOrderStatus);
                     return true;
                 } else {
                     return false;

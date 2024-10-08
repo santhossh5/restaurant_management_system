@@ -79,8 +79,9 @@ public class MenuActivity extends AppCompatActivity {
                     startActivity(new Intent(MenuActivity.this, CustomerHomePage.class));
                     return true;
                 } else if (itemId == R.id.action_order_status) {
-                    Toast.makeText(MenuActivity.this, "Order Status Selected", Toast.LENGTH_SHORT).show();
-                    showOrderSummary();
+                    //Toast.makeText(MenuActivity.this, "Order Status Selected", Toast.LENGTH_SHORT).show();
+                    //showOrderSummary();
+                    startActivity(new Intent(MenuActivity.this, OrderStatusActivity.class));
                     return true;
                 } else {
                     return false;

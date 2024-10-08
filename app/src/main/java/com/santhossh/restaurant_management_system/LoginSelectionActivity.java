@@ -18,6 +18,7 @@ public class LoginSelectionActivity extends AppCompatActivity {
 
         // Initialize buttons
         customerLoginButton = findViewById(R.id.customerLoginButton);
+
         workerLoginButton = findViewById(R.id.workerLoginButton);
 
         // Set onClick listener for customer login button
