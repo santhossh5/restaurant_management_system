@@ -43,4 +43,14 @@ public class Order {
     public void setTableNumber(String tableNumber) {
         this.tableNumber = tableNumber;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "items=" + items +
+                ", timestamp=" + timestamp +
+                ", orderStatus='" + orderStatus + '\'' +
+                ", tableNumber='" + tableNumber + '\'' +
+                '}';
+    }
 }

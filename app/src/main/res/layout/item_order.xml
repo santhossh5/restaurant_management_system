@@ -3,24 +3,39 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:layout_marginBottom="10dp"
+    android:background="?attr/colorSurface">
 
+    <!-- Order Items Text -->
     <TextView
         android:id="@+id/text_order_items"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:text="Order Items"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:paddingBottom="8dp"
+        android:textColor="?attr/colorOnSurface" />
 
+    <!-- Order Status Text -->
     <TextView
         android:id="@+id/text_order_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp" />
+        android:text="Status: In Progress"
+        android:textSize="16sp"
+        android:paddingBottom="4dp"
+        android:textColor="@android:color/holo_green_dark" />
 
+    <!-- Order Timestamp Text -->
     <TextView
         android:id="@+id/text_order_timestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp" />
+        android:text="Ordered on: 12th October 2023, 3:45 PM"
+        android:textSize="14sp"
+        android:textColor="?attr/colorOnSurface"
+        android:paddingBottom="8dp" />
+
 </LinearLayout>

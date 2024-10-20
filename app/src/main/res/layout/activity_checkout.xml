@@ -1,41 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
 
-    <!-- Toolbar -->
+    <!-- Toolbar at the top -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
-        android:elevation="4dp" />
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:title="Checkout"
+        android:titleTextColor="@android:color/white"
+        />
 
-    <!-- RecyclerView for displaying ordered items -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_checkout"
+    <TextView
+        android:id="@+id/text_order_summary"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="wrap_content"
+        android:text="Order Summary"
+        android:padding="16dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:paddingBottom="8dp"
+        android:paddingTop="16dp" /> <!-- Added paddingTop for better spacing -->
 
-    <!-- Total amount section -->
-    <LinearLayout
+    <TextView
+        android:id="@+id/text_total_amount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:gravity="center_vertical"
-        android:orientation="vertical">
+        android:text="Total: ₹0.00"
+        android:textSize="18sp"
+        android:textColor="@android:color/holo_green_dark"
+        android:paddingBottom="16dp" /> <!-- Added paddingBottom for spacing -->
 
-        <TextView
-            android:id="@+id/text_total_amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Total Amount: $0.00"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-    </LinearLayout>
+    <Button
+        android:id="@+id/btn_place_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Check Out"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:background="@drawable/rounded_button"
+    android:textColor="@android:color/white"
+    android:fontFamily="sans-serif-medium"
+    android:elevation="6dp" /> <!-- Button elevation for depth effect -->
 
-
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

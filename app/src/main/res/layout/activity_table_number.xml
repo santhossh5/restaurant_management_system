@@ -3,31 +3,54 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:gravity="center"
+    android:background="@color/premium_light_background">
 
+    <!-- Title Text -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:paddingBottom="24dp"
         android:text="Enter your Table Number"
-        android:textSize="18sp" />
+        android:textSize="20sp"
+        android:textColor="@color/premium_light_on_surface"
+        android:fontFamily="sans-serif-medium"
+        android:textStyle="bold" />
 
+    <!-- Table Number Input Field -->
     <EditText
         android:id="@+id/edit_text_table_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Table Number"
-        android:inputType="number" />
+        android:inputType="number"
+        android:background="@drawable/edittext_background"
+        android:padding="16dp"
+        android:textColor="@color/premium_light_on_surface"
+        android:textColorHint="@color/premium_light_on_surface"
+        android:textSize="16sp"
+        android:elevation="4dp"
+        android:minHeight="48dp"
+        android:layout_marginBottom="24dp"/>
 
+    <!-- Submit Button -->
     <Button
         android:id="@+id/button_submit_table_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="?attr/colorPrimary"
-        android:padding="12dp"
-        android:text="Submit"
-        android:textColor="@android:color/white" />
+        android:layout_marginTop="24dp"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:text="Login as Customer"
+        android:textSize="18sp"
+        android:background="@drawable/rounded_button"
+        android:textColor="@color/premium_light_on_primary"
+        android:fontFamily="sans-serif-medium"
+        android:elevation="6dp" />
 
 </LinearLayout>

@@ -20,7 +20,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderStatusActivity extends AppCompatActivity {
+public class    OrderStatusActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private OrderAdapter orderAdapter;
@@ -93,25 +93,48 @@ public class OrderStatusActivity extends AppCompatActivity {
             return;
         }
 
-        registration = db.collection("orders")
-                .whereEqualTo("tableNumber", tableNumber)  // Fetch orders for the specific table number
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if (error != null) {
-                            Toast.makeText(OrderStatusActivity.this, "Failed to load orders.", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
+        // Initialize Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                        orderList.clear();
-                        if (value != null) {
-                            for (QueryDocumentSnapshot snapshot : value) {
-                                Order order = snapshot.toObject(Order.class);
-                                orderList.add(order);
-                            }
-                        }
-                        orderAdapter.notifyDataSetChanged();  // Notify adapter about data changes
+        // Retrieve the first document from the 'santhossh' collection
+        db.collection("santhossh")
+                .limit(1)  // Get only the first document
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                        // Get the first document's ID
+                        String documentId = task.getResult().getDocuments().get(0).getId();
+
+                        // Now, fetch orders from the 'orders' sub-collection of this document
+                        registration = db.collection("santhossh")
+                                .document(documentId)
+                                .collection("orders")
+                                .whereEqualTo("tableNumber", tableNumber)  // Fetch orders for the specific table number
+                                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                                        if (error != null) {
+                                            Toast.makeText(OrderStatusActivity.this, "Failed to load orders.", Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
+
+                                        orderList.clear();
+                                        if (value != null) {
+                                            for (QueryDocumentSnapshot snapshot : value) {
+                                                Order order = snapshot.toObject(Order.class);
+                                                orderList.add(order);
+                                            }
+                                        }
+                                        orderAdapter.notifyDataSetChanged();  // Notify adapter about data changes
+                                    }
+                                });
+                    } else {
+                        Toast.makeText(this, "Failed to retrieve document ID.", Toast.LENGTH_SHORT).show();
                     }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to retrieve document ID. Please try again.", Toast.LENGTH_SHORT).show();
                 });
     }
+
 }

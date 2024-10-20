@@ -1,8 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Base application theme for the light theme -->
     <style name="Base.Theme.Restaurant_management_system" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Primary colors -->
+        <item name="colorPrimary">@color/premium_light_primary</item>
+        <item name="colorPrimaryVariant">@color/premium_light_primary_variant</item>
+        <item name="colorOnPrimary">@color/premium_light_on_primary</item>
+
+        <!-- Surface and other colors -->
+        <item name="colorSurface">@color/premium_light_surface</item>
+        <item name="colorOnSurface">@color/premium_light_on_surface</item>
+
+        <!-- Accent colors -->
+        <item name="colorSecondary">@color/premium_light_secondary</item>
     </style>
 
     <style name="Theme.Restaurant_management_system" parent="Base.Theme.Restaurant_management_system" />

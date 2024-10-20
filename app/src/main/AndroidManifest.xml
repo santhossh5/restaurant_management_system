@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
+
         <activity android:name=".CustomerHomePage"
             android:exported="true">
             <intent-filter>
@@ -32,6 +32,8 @@
         <activity android:name=".WorkerLoginPage"/>
         <activity android:name=".MenuActivity"/>
         <activity android:name=".TableNumberActivity"/>
+        <activity android:name=".OrderStatusActivity"/>
+        <activity android:name=".CheckoutActivity"/>
     </application>
 
 </manifest>

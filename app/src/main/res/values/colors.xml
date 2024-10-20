@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Light theme colors -->
+    <color name="premium_light_primary">#FF6750A4</color> <!-- Navy Blue -->
+    <color name="premium_light_primary_variant">#673AB7</color> <!-- Darker Navy -->
+    <color name="premium_light_secondary">#8BC34A</color> <!-- Gold -->
+    <color name="premium_light_on_primary">#FFFFFF</color> <!-- White for text on primary -->
+    <color name="premium_light_background">#F5F5F7</color> <!-- Light Gray background -->
+    <color name="premium_light_surface">#FFFFFF</color> <!-- White for cards, dialogs -->
+    <color name="premium_light_on_surface">#2B2B2B</color> <!-- Dark Gray for text on surfaces -->
+
+    <!-- Dark theme colors -->
+    <color name="premium_dark_primary">#1C1C1E</color> <!-- Almost black, with a slight blue -->
+    <color name="premium_dark_primary_variant">#292929</color> <!-- Darker Gray -->
+    <color name="premium_dark_secondary">#FFD700</color> <!-- Bright Gold for contrast -->
+    <color name="premium_dark_on_primary">#FFFFFF</color> <!-- White text on dark surfaces -->
+    <color name="premium_dark_background">#121212</color> <!-- Darker background -->
+    <color name="premium_dark_surface">#1E1E1E</color> <!-- Slightly lighter for cards -->
+    <color name="premium_dark_on_surface">#E5E5E5</color> <!-- Light gray text on dark surfaces -->
+
+    <!-- Define your colors here -->
+    <color name="nav_item_color_inactive">#B0BEC5</color>
+    <color name="nav_item_color_active">#6200EE</color>
+    <color name="white">#FFFFFF</color>
 </resources>

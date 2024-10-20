@@ -6,16 +6,20 @@ public class Food {
     private String name;        // Name of the food item
     private String description; // Description of the food item
     private double price;       // Price of the food item
+    private String imageUrl;    // URL for the food item's image
+    private boolean inStock; // New field for stock status
 
     // Empty constructor (required for Firebase)
     public Food() {}
 
     // Constructor with fields
-    public Food(String id, String name, String description, double price) {
+    public Food(String id, String name, String description, double price,String imageUrl, boolean inStock) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.imageUrl = imageUrl;
+        this.inStock = inStock;
     }
 
     // Getters and setters for the fields
@@ -49,5 +53,17 @@ public class Food {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public boolean isInStock() { // Getter for the inStock field
+        return inStock;
     }
 }

@@ -2,6 +2,7 @@ package com.santhossh.restaurant_management_system;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -25,16 +25,15 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 public class MenuActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private FoodAdapter foodAdapter;
-    private List<Food> foodList;
+    public List<Food> foodList;
     private FirebaseFirestore db;
     private ListenerRegistration registration;
     private BottomNavigationView bottomNavigationView;
@@ -79,8 +78,6 @@ public class MenuActivity extends AppCompatActivity {
                     startActivity(new Intent(MenuActivity.this, CustomerHomePage.class));
                     return true;
                 } else if (itemId == R.id.action_order_status) {
-                    //Toast.makeText(MenuActivity.this, "Order Status Selected", Toast.LENGTH_SHORT).show();
-                    //showOrderSummary();
                     startActivity(new Intent(MenuActivity.this, OrderStatusActivity.class));
                     return true;
                 } else {
@@ -108,29 +105,54 @@ public class MenuActivity extends AppCompatActivity {
 
     // Fetch food items from Firestore
     private void fetchFoodItems() {
-        registration = db.collection("food")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if (error != null) {
-                            Toast.makeText(MenuActivity.this, "Failed to load menu.", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-
+        db.collection("santhossh")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
                         foodList.clear();
-                        if (value != null) {
-                            for (QueryDocumentSnapshot snapshot : value) {
-                                Food food = snapshot.toObject(Food.class);
-                                food.setId(snapshot.getId());
-                                foodList.add(food);
-                            }
+                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                            // Get the 'menu' sub-collection from each document
+                            db.collection("santhossh")
+                                    .document(documentSnapshot.getId())
+                                    .collection("menu")
+                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                                            if (error != null) {
+                                                Toast.makeText(MenuActivity.this, "Failed to load menu.", Toast.LENGTH_SHORT).show();
+                                                return;
+                                            }
+
+                                            if (value != null) {
+                                                for (QueryDocumentSnapshot snapshot : value) {
+                                                    Food food = snapshot.toObject(Food.class);
+                                                    food.setId(snapshot.getId());
+                                                    // Check if the food item is in stock
+                                                    if (food.isInStock()) {
+                                                        foodList.add(food);
+                                                        Log.d("MenuActivity", "Food added: " + food.getName() + ", Price: " + food.getPrice());
+                                                    } else {
+                                                        Log.d("MenuActivity", "Food not in stock: " + food.getName());
+                                                    }
+                                                }
+                                            }
+
+                                            if (foodList.isEmpty()) {
+                                                Toast.makeText(MenuActivity.this, "No items available.", Toast.LENGTH_SHORT).show();
+                                            }
+
+                                            foodAdapter.notifyDataSetChanged();
+                                        }
+                                    });
                         }
-                        foodAdapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(MenuActivity.this, "Failed to load restaurants.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
-    // Show Order Summary when the Floating Action Button is clicked
+
+    // Show Order Summary when the button is clicked
     protected void showOrderSummary() {
         Map<String, Integer> orderMap = foodAdapter.getOrderMap();
         if (orderMap.isEmpty()) {
@@ -140,27 +162,33 @@ public class MenuActivity extends AppCompatActivity {
 
         // Create a string to display in the dialog
         StringBuilder orderSummary = new StringBuilder();
+        double totalPrice = 0.0; // Variable to hold total price
+
         for (Map.Entry<String, Integer> entry : orderMap.entrySet()) {
             String foodId = entry.getKey();
             int quantity = entry.getValue();
 
             // Find the food item by foodId and append to the summary
             for (Food food : foodList) {
-                if (food.getId().equals(foodId)) {
-                    orderSummary.append(food.getName()).append(": ").append(quantity).append("\n");
-                    break;
-                }
+                orderSummary.append(foodId).append(": ").append(quantity).append("\n");
+                totalPrice += food.getPrice() * quantity; // Calculate total price
+                break;
             }
         }
+
+        // Append total price to the summary
+        orderSummary.append("Total: ₹").append(totalPrice).append("\n");
 
         // Show the summary in an AlertDialog
         new AlertDialog.Builder(this)
                 .setTitle("Order Summary")
                 .setMessage(orderSummary.toString())
                 .setPositiveButton("OK", (dialog, which) -> {
-                    // Call the method to save the order to Firestore
                     saveOrderToFirestore(orderMap);
 
+                    // Reset the order map to clear counts after confirmation
+                    foodAdapter.resetOrderMap(); // Call the method to reset the order map
+                    foodAdapter.notifyDataSetChanged(); // Notify the adapter of the change
                 })
                 .setNegativeButton("Cancel", null) // Close dialog on cancel
                 .show();
@@ -169,28 +197,49 @@ public class MenuActivity extends AppCompatActivity {
     private void saveOrderToFirestore(Map<String, Integer> orderMap) {
         // Create a new order object
         Order order = new Order();
-        order.setItems(orderMap);  // Set the items map
+        Map<String, Integer> orderMapCopy = new HashMap<>(orderMap);
+        order.setItems(orderMapCopy);  // Set the items map
         order.setTimestamp(System.currentTimeMillis());  // Add a timestamp for the order
         order.setOrderStatus("Pending");
 
         // Add table number to the order
         String tableNumber = TableManager.getInstance().getTableNumber();
         if (tableNumber != null && !tableNumber.isEmpty()) {
-            order.setTableNumber(tableNumber);  // Assuming you add tableNumber field to the Order class
+            order.setTableNumber(tableNumber);
         } else {
             Toast.makeText(this, "Table number is not set!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Save to Firestore
+        // Initialize Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("orders")  // Collection name where orders will be stored
-                .add(order)
-                .addOnSuccessListener(documentReference -> {
-                    Toast.makeText(this, "Order placed successfully!", Toast.LENGTH_SHORT).show();
+
+        // Retrieve the first document from the 'santhossh' collection and get its ID
+        db.collection("santhossh")
+                .limit(1)  // Get only the first document
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                        // Get the first document's ID
+                        String documentId = task.getResult().getDocuments().get(0).getId();
+                        // Save the order to the 'orders' sub-collection of the first document
+                        db.collection("santhossh")
+                                .document(documentId)
+                                .collection("orders")
+                                .add(order)
+                                .addOnSuccessListener(documentReference -> {
+                                    Toast.makeText(this, "Order placed successfully!", Toast.LENGTH_SHORT).show();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(this, "Failed to place order. Please try again.", Toast.LENGTH_SHORT).show();
+                                });
+
+                    } else {
+                        Toast.makeText(this, "Failed to retrieve document ID.", Toast.LENGTH_SHORT).show();
+                    }
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Failed to place order. Please try again.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Failed to retrieve document ID. Please try again.", Toast.LENGTH_SHORT).show();
                 });
     }
 

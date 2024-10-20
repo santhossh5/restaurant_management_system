@@ -29,8 +29,9 @@ public class TableNumberActivity extends AppCompatActivity {
                 if (!tableNumber.isEmpty()) {
                     TableManager.getInstance().setTableNumber(tableNumber);
 
-                    // Start the Menu Activity or the next activity
-                    startActivity(new Intent(TableNumberActivity.this, CustomerHomePage.class));
+                    Intent intent = new Intent(TableNumberActivity.this, CustomerHomePage.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
                     finish(); // Optional: finish this activity to remove it from back stack
                 } else {
                     Toast.makeText(TableNumberActivity.this, "Please enter a table number.", Toast.LENGTH_SHORT).show();

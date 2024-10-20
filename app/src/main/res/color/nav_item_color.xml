@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/color/nav_item_color.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<!-- Active/selected state -->
+<item android:state_checked="true" android:color="@color/premium_light_primary" />
+
+<!-- Inactive/unselected state -->
+<item android:color="@color/nav_item_color_inactive" />
+</selector>

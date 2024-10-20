@@ -7,6 +7,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
+import java.util.Map;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
 
@@ -50,8 +51,14 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             // Convert timestamp to a human-readable format (optional)
             String formattedTimestamp = java.text.DateFormat.getDateTimeInstance().format(order.getTimestamp());
 
+            StringBuilder orderSummary = new StringBuilder();
+            for(Map.Entry<String, Integer> entry : order.getItems().entrySet()) {
+                String foodName = entry.getKey();
+                int quantity = entry.getValue();
+                orderSummary.append(foodName).append(": ").append(quantity).append("\n");
+            }
             // Bind data to the views
-            orderItems.setText(order.getItems().toString());
+            orderItems.setText(orderSummary);
             orderStatus.setText("Status: " + order.getOrderStatus());
             orderTimestamp.setText("Ordered on: " + formattedTimestamp);
         }
