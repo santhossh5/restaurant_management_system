@@ -130,7 +130,7 @@ public class MenuActivity extends AppCompatActivity {
                                                     // Check if the food item is in stock
                                                     if (food.isInStock()) {
                                                         foodList.add(food);
-                                                        Log.d("MenuActivity", "Food added: " + food.getName() + ", Price: " + food.getPrice());
+                                                        //Log.d("MenuActivity", "Food added: " + food.getName() + ", Price: " + food.getPrice());
                                                     } else {
                                                         Log.d("MenuActivity", "Food not in stock: " + food.getName());
                                                     }
@@ -150,7 +150,6 @@ public class MenuActivity extends AppCompatActivity {
                     }
                 });
     }
-
 
     // Show Order Summary when the button is clicked
     protected void showOrderSummary() {
@@ -195,54 +194,72 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void saveOrderToFirestore(Map<String, Integer> orderMap) {
-        // Create a new order object
-        Order order = new Order();
-        Map<String, Integer> orderMapCopy = new HashMap<>(orderMap);
-        order.setItems(orderMapCopy);  // Set the items map
-        order.setTimestamp(System.currentTimeMillis());  // Add a timestamp for the order
-        order.setOrderStatus("Pending");
-
-        // Add table number to the order
-        String tableNumber = TableManager.getInstance().getTableNumber();
-        if (tableNumber != null && !tableNumber.isEmpty()) {
-            order.setTableNumber(tableNumber);
-        } else {
-            Toast.makeText(this, "Table number is not set!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         // Initialize Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        // Retrieve the first document from the 'santhossh' collection and get its ID
-        db.collection("santhossh")
-                .limit(1)  // Get only the first document
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
-                        // Get the first document's ID
-                        String documentId = task.getResult().getDocuments().get(0).getId();
-                        // Save the order to the 'orders' sub-collection of the first document
-                        db.collection("santhossh")
-                                .document(documentId)
-                                .collection("orders")
-                                .add(order)
-                                .addOnSuccessListener(documentReference -> {
-                                    Toast.makeText(this, "Order placed successfully!", Toast.LENGTH_SHORT).show();
-                                })
-                                .addOnFailureListener(e -> {
-                                    Toast.makeText(this, "Failed to place order. Please try again.", Toast.LENGTH_SHORT).show();
-                                });
+        // Get the session ID from the OrderManager
+        String sessionId = OrderManager.getInstance().getSessionId();
+        String tableNumber = OrderManager.getInstance().getCurrentOrder().getTableNumber();
 
-                    } else {
-                        Toast.makeText(this, "Failed to retrieve document ID.", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Failed to retrieve document ID. Please try again.", Toast.LENGTH_SHORT).show();
-                });
+        // Check if session ID is valid
+        if (sessionId == null || sessionId.isEmpty()) {
+            Toast.makeText(this, "Session ID is missing!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Create a new order object to hold the session-level data
+        Order order = new Order();
+        order.setTimestamp(System.currentTimeMillis()); // Set the current timestamp
+        order.setOrderStatus("Pending"); // Default order status
+        order.setSessionId(sessionId);
+        order.setTableNumber(tableNumber); // Set table number
+
+        // Once the order is successfully created, save the food items under the 'foods' sub-collection
+        saveFoodItemsToFirestore(sessionId, orderMap, tableNumber);
     }
 
+    private void saveFoodItemsToFirestore(String sessionId, Map<String, Integer> orderMap, String tableNumber) {
+        // Get the current timestamp for the order
+        long timestamp = System.currentTimeMillis();
+        String orderStatus = "Pending";  // Default order status
+
+        // Loop through the orderMap to save each food item
+        for (Map.Entry<String, Integer> entry : orderMap.entrySet()) {
+            String foodId = entry.getKey();  // This is the food ID
+            int quantity = entry.getValue();  // This is the quantity ordered
+
+            Log.d("MenuActivity s", "Food not null");
+            // Create a map to store food data (name, quantity, table number, order status, and timestamp)
+            Map<String, Object> foodData = new HashMap<>();
+            foodData.put("name", foodId);
+            foodData.put("quantity", quantity);
+            foodData.put("tableNumber", tableNumber);
+            foodData.put("orderStatus", orderStatus);
+            foodData.put("timestamp", timestamp);
+            final String foodname = foodId;
+            // Use the food name as the document ID to avoid duplication, or use an auto-generated ID
+            String foodDocId = foodId + "_" + System.currentTimeMillis(); // Optional: Unique document ID
+            // If you want to use Firestore's auto-generated ID instead, you can call .add() instead of .document(foodDocId)
+
+            // Add each food item to the 'foods' sub-collection under the session document
+            db.collection("santhossh")
+                        .document("oQNunJYjNaAQomaZ3COt")  // The restaurant document ID
+                        .collection("orders")
+                        .document(sessionId)  // The session ID as the document ID
+                        .collection("foods")  // Sub-collection for food items
+                        .document(foodDocId)  // Use the generated ID as the document ID
+                        .set(foodData)  // Save the food data with the specified document ID
+                        .addOnSuccessListener(aVoid -> {
+                            Log.d("MenuActivity s", "Food item saved: " + foodname);
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(this, "Failed to save food item: " + foodname, Toast.LENGTH_SHORT).show();
+                        });
+        }
+
+        // Notify user that the order is complete
+        Toast.makeText(this, "Order placed successfully!", Toast.LENGTH_SHORT).show();
+    }
 
 
     @Override

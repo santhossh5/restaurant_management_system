@@ -18,7 +18,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class    OrderStatusActivity extends AppCompatActivity {
 
@@ -87,45 +89,56 @@ public class    OrderStatusActivity extends AppCompatActivity {
 
     // Fetch orders for the current table number
     private void fetchOrders() {
-        String tableNumber = TableManager.getInstance().getTableNumber();
-        if (tableNumber == null || tableNumber.isEmpty()) {
-            Toast.makeText(this, "Table number is not set.", Toast.LENGTH_SHORT).show();
+        // Get the session ID from the OrderManager
+        String sessionId = OrderManager.getInstance().getSessionId();
+        if (sessionId == null || sessionId.isEmpty()) {
+            Toast.makeText(this, "Session ID is not set.", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Initialize Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        // Retrieve the first document from the 'santhossh' collection
+        // Retrieve the first document from the 'santhossh' collection (assumed to be the restaurant document)
         db.collection("santhossh")
                 .limit(1)  // Get only the first document
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
-                        // Get the first document's ID
+                        // Get the first document's ID (the restaurant document ID)
                         String documentId = task.getResult().getDocuments().get(0).getId();
 
-                        // Now, fetch orders from the 'orders' sub-collection of this document
-                        registration = db.collection("santhossh")
+                        // Now, fetch the specific sessionId document from the 'orders' collection
+                        db.collection("santhossh")
                                 .document(documentId)
                                 .collection("orders")
-                                .whereEqualTo("tableNumber", tableNumber)  // Fetch orders for the specific table number
-                                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                                        if (error != null) {
-                                            Toast.makeText(OrderStatusActivity.this, "Failed to load orders.", Toast.LENGTH_SHORT).show();
-                                            return;
-                                        }
+                                .document(sessionId)  // The session ID document
+                                .collection("foods")  // Sub-collection for food items
+                                .get()
+                                .addOnCompleteListener(foodTask -> {
+                                    if (foodTask.isSuccessful()) {
+                                        orderList.clear(); // Clear previous orders
+                                        for (QueryDocumentSnapshot foodSnapshot : foodTask.getResult()) {
+                                            // Create a new Order object from the food data
+                                            Order order = new Order();
+                                            order.setSessionId(sessionId);
+                                            order.setOrderStatus(foodSnapshot.getString("orderStatus"));
+                                            order.setTableNumber(foodSnapshot.getString("tableNumber"));
+                                            order.setTimestamp(foodSnapshot.getLong("timestamp"));
 
-                                        orderList.clear();
-                                        if (value != null) {
-                                            for (QueryDocumentSnapshot snapshot : value) {
-                                                Order order = snapshot.toObject(Order.class);
-                                                orderList.add(order);
-                                            }
+                                            // Create a map for food items (name to quantity)
+                                            Map<String, Integer> foodItems = new HashMap<>();
+                                            String foodName = foodSnapshot.getString("name");
+                                            int quantity = foodSnapshot.getLong("quantity").intValue();
+                                            foodItems.put(foodName, quantity);
+                                            order.setItems(foodItems); // Set the food items in the order
+
+                                            // Add the order to the orderList
+                                            orderList.add(order);
                                         }
                                         orderAdapter.notifyDataSetChanged();  // Notify adapter about data changes
+                                    } else {
+                                        Toast.makeText(OrderStatusActivity.this, "Failed to load food items.", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                     } else {
@@ -136,5 +149,7 @@ public class    OrderStatusActivity extends AppCompatActivity {
                     Toast.makeText(this, "Failed to retrieve document ID. Please try again.", Toast.LENGTH_SHORT).show();
                 });
     }
+
+
 
 }

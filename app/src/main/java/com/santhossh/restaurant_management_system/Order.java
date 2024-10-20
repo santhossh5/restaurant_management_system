@@ -7,10 +7,13 @@ public class Order {
     private long timestamp;  // Timestamp for when the order was placed
     private String orderStatus;  // Status of the order (e.g., "Pending", "In Progress", "Completed")
     private String tableNumber;  // Table number for the order
+    private String sessionId;  // Unique session ID for the order
 
+    // Default constructor
     public Order() {
-        // Default constructor
     }
+
+    // Getters and Setters for all fields
 
     public Map<String, Integer> getItems() {
         return items;
@@ -44,6 +47,16 @@ public class Order {
         this.tableNumber = tableNumber;
     }
 
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    // Override toString method to include sessionId
+
     @Override
     public String toString() {
         return "Order{" +
@@ -51,6 +64,7 @@ public class Order {
                 ", timestamp=" + timestamp +
                 ", orderStatus='" + orderStatus + '\'' +
                 ", tableNumber='" + tableNumber + '\'' +
+                ", sessionId='" + sessionId + '\'' +
                 '}';
     }
 }

@@ -27,12 +27,14 @@ public class TableNumberActivity extends AppCompatActivity {
                 String tableNumber = editTextTableNumber.getText().toString().trim();
 
                 if (!tableNumber.isEmpty()) {
-                    TableManager.getInstance().setTableNumber(tableNumber);
+                    // Create a new order with a session ID
+                    OrderManager.getInstance().createNewOrder(tableNumber);
 
+                    // Proceed to the next activity
                     Intent intent = new Intent(TableNumberActivity.this, CustomerHomePage.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
-                    finish(); // Optional: finish this activity to remove it from back stack
+                    finish(); // Finish the activity to prevent going back
                 } else {
                     Toast.makeText(TableNumberActivity.this, "Please enter a table number.", Toast.LENGTH_SHORT).show();
                 }
