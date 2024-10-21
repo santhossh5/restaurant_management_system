@@ -1,4 +1,4 @@
-package com.santhossh.restaurant_management_system;
+package com.santhossh.restaurant_management_system.customer;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,6 +6,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.santhossh.restaurant_management_system.R;
+
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +23,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     @NonNull
     @Override
     public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.customer_item_order, parent, false);
         return new OrderViewHolder(view);
     }
 

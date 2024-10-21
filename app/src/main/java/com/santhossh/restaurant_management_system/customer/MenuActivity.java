@@ -1,4 +1,4 @@
-package com.santhossh.restaurant_management_system;
+package com.santhossh.restaurant_management_system.customer;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.santhossh.restaurant_management_system.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -227,8 +228,19 @@ public class MenuActivity extends AppCompatActivity {
         for (Map.Entry<String, Integer> entry : orderMap.entrySet()) {
             String foodId = entry.getKey();  // This is the food ID
             int quantity = entry.getValue();  // This is the quantity ordered
+            double price = 0;  // This is the price of the food
+            for(Food food : foodList)
+            {
+                if(food.getName().equals(foodId))
+                {
+                    price = food.getPrice();
+                }
+            }
 
-            Log.d("MenuActivity s", "Food not null");
+            Map<String, Object> t_data = new HashMap<>();
+            t_data.put("session_id",sessionId);
+            db.collection("santhossh").document("oQNunJYjNaAQomaZ3COt").collection("orders").document(sessionId).set(t_data);
+
             // Create a map to store food data (name, quantity, table number, order status, and timestamp)
             Map<String, Object> foodData = new HashMap<>();
             foodData.put("name", foodId);
@@ -236,6 +248,7 @@ public class MenuActivity extends AppCompatActivity {
             foodData.put("tableNumber", tableNumber);
             foodData.put("orderStatus", orderStatus);
             foodData.put("timestamp", timestamp);
+            foodData.put("price", price);
             final String foodname = foodId;
             // Use the food name as the document ID to avoid duplication, or use an auto-generated ID
             String foodDocId = foodId + "_" + System.currentTimeMillis(); // Optional: Unique document ID

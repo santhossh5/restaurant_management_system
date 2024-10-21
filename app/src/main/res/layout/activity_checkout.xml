@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <!-- Toolbar at the top -->
     <androidx.appcompat.widget.Toolbar
@@ -12,46 +12,127 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:title="Checkout"
-        android:titleTextColor="@android:color/white"
-        />
+        app:layout_constraintTop_toTopOf="parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- Image Icon -->
+            <ImageView
+                android:id="@+id/toolbar_icon"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/restaurant_logo" />
+
+            <!-- Title Text -->
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Menu"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <!-- Order Summary Text-->
     <TextView
         android:id="@+id/text_order_summary"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Order Summary"
-        android:padding="16dp"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:paddingBottom="8dp"
-        android:paddingTop="16dp" /> <!-- Added paddingTop for better spacing -->
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-        android:id="@+id/text_total_amount"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/order_item_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/text_order_summary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/text_food_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Food Name"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Qty"
+            android:layout_marginEnd="16dp" />
+
+        <TextView
+            android:id="@+id/text_total_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price" />
+
+    </LinearLayout>
+
+
+    <!-- RecyclerView for ordered food items -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_order_items"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintTop_toBottomOf="@id/order_item_title"
+        app:layout_constraintBottom_toTopOf="@id/text_total_amount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="8dp" />
+
+    <!-- Total Amount Text -->
+    <TextView
+        android:id="@+id/text_total_amount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:text="Total: ₹0.00"
+        android:gravity="right"
         android:textSize="18sp"
         android:textColor="@android:color/holo_green_dark"
-        android:paddingBottom="16dp" /> <!-- Added paddingBottom for spacing -->
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/recycler_order_items"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Checkout Button (Now pinned above navigation buttons) -->
     <Button
         android:id="@+id/btn_place_order"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Check Out"
-        android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:paddingLeft="32dp"
         android:paddingRight="32dp"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
         android:background="@drawable/rounded_button"
-    android:textColor="@android:color/white"
-    android:fontFamily="sans-serif-medium"
-    android:elevation="6dp" /> <!-- Button elevation for depth effect -->
-
-</LinearLayout>
+        android:textColor="@android:color/white"
+        android:fontFamily="sans-serif-medium"
+        android:elevation="6dp"
+        app:layout_constraintTop_toBottomOf="@id/text_total_amount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" /> <!-- Button pinned above the bottom with margin -->
+</androidx.constraintlayout.widget.ConstraintLayout>

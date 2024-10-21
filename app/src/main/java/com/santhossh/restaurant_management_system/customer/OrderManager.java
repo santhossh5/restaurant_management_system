@@ -1,4 +1,4 @@
-package com.santhossh.restaurant_management_system;
+package com.santhossh.restaurant_management_system.customer;
 
 import java.util.HashMap;
 

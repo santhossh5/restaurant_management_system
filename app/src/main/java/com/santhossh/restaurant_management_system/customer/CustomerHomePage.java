@@ -1,4 +1,4 @@
-package com.santhossh.restaurant_management_system;
+package com.santhossh.restaurant_management_system.customer;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,11 +6,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.santhossh.restaurant_management_system.R;
+
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class CustomerHomePage extends AppCompatActivity {
 
@@ -36,7 +37,7 @@ public class CustomerHomePage extends AppCompatActivity {
         btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CustomerHomePage.this, LoginSelectionActivity.class);
+                Intent intent = new Intent(CustomerHomePage.this, CheckoutActivity.class);
                 startActivity(intent);
             }
         });
