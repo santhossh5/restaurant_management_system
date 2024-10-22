@@ -1,4 +1,4 @@
-package com.santhossh.restaurant_management_system.customer;
+package com.santhossh.restaurant_management_system;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,8 +6,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.santhossh.restaurant_management_system.R;
 
 import java.util.List;
 import java.util.Map;

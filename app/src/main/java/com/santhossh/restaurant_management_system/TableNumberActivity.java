@@ -1,4 +1,4 @@
-package com.santhossh.restaurant_management_system.customer;
+package com.santhossh.restaurant_management_system;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,8 +7,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.santhossh.restaurant_management_system.R;
 
 public class TableNumberActivity extends AppCompatActivity {
 

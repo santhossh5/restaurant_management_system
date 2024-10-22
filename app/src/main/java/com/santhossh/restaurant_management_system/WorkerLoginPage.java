@@ -1,9 +1,7 @@
-package com.santhossh.restaurant_management_system.customer;
+package com.santhossh.restaurant_management_system;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.santhossh.restaurant_management_system.R;
 
 public class WorkerLoginPage extends AppCompatActivity {
 

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <!-- Toolbar at the top -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="?attr/homeAsUpIndicator">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- Image Icon -->
+            <ImageView
+                android:id="@+id/toolbar_icon"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/restaurant_logo"/>
+            <!-- Title Text -->
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Feedback"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <!-- LinearLayout to contain input fields -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+    android:orientation="vertical"
+    app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+    <!-- Input for Name -->
+    <TextView
+        android:id="@+id/text_name_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your Name:"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="24dp"/>
+
+    <EditText
+        android:id="@+id/edit_text_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your name"
+        android:inputType="textPersonName"
+        android:padding="12dp"
+        android:background="@android:drawable/edit_text"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Feedback Label -->
+    <TextView
+        android:id="@+id/text_feedback_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your Feedback:"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="24dp" />
+
+    <!-- Feedback Input Field -->
+    <EditText
+        android:id="@+id/edit_text_feedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your feedback here"
+        android:gravity="top"
+        android:inputType="textMultiLine"
+        android:minLines="5"
+        android:padding="12dp"
+        android:background="@android:drawable/edit_text" />
+
+    <!-- Rating Label -->
+    <TextView
+        android:id="@+id/text_rating_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rate Us:"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="24dp" />
+
+    <!-- Rating Bar -->
+    <RatingBar
+        android:id="@+id/rating_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:progressTint="@color/premium_dark_secondary"
+        android:numStars="5"
+        android:stepSize="0.5"
+        android:rating="0" />
+
+    <!-- Submit Button -->
+    <Button
+        android:id="@+id/button_submit_feedback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit Feedback"
+        android:backgroundTint="?attr/colorPrimary"
+        android:layout_gravity="center"
+        android:textColor="@android:color/white"
+        android:padding="12dp"
+        android:elevation="6dp"
+        android:layout_marginTop="24dp" />
+</LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

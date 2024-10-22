@@ -1,12 +1,10 @@
-package com.santhossh.restaurant_management_system.customer;
+package com.santhossh.restaurant_management_system;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.santhossh.restaurant_management_system.R;
 
 public class LoginSelectionActivity extends AppCompatActivity {
 
@@ -38,7 +36,7 @@ public class LoginSelectionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Navigate to WorkerLoginActivity
-                Intent intent = new Intent(LoginSelectionActivity.this, WorkerLoginPage.class);
+                Intent intent = new Intent(LoginSelectionActivity.this, LoginActivity1.class);
                 startActivity(intent);
             }
         });

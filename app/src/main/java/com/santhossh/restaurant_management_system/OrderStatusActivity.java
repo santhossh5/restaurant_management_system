@@ -1,4 +1,4 @@
-package com.santhossh.restaurant_management_system.customer;
+package com.santhossh.restaurant_management_system;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.santhossh.restaurant_management_system.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +32,7 @@ public class    OrderStatusActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_status);
+        setContentView(R.layout.activity_order_status_customer);
 
         // Set up the toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);

@@ -1,4 +1,4 @@
-package com.santhossh.restaurant_management_system.customer;
+package com.santhossh.restaurant_management_system;
 
 public class TableManager {
     private static TableManager instance; // Single instance

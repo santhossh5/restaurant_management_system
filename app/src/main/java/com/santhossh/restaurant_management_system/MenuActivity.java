@@ -1,4 +1,4 @@
-package com.santhossh.restaurant_management_system.customer;
+package com.santhossh.restaurant_management_system;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,7 +23,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.santhossh.restaurant_management_system.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -106,16 +105,14 @@ public class MenuActivity extends AppCompatActivity {
 
     // Fetch food items from Firestore
     private void fetchFoodItems() {
-        db.collection("santhossh")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        foodList.clear();
-                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+//        db.collection("santhossh")
+//                .get()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        foodList.clear();
+//                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                             // Get the 'menu' sub-collection from each document
-                            db.collection("santhossh")
-                                    .document(documentSnapshot.getId())
-                                    .collection("menu")
+                            db.collection("food")
                                     .addSnapshotListener(new EventListener<QuerySnapshot>() {
                                         @Override
                                         public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -145,11 +142,11 @@ public class MenuActivity extends AppCompatActivity {
                                             foodAdapter.notifyDataSetChanged();
                                         }
                                     });
-                        }
-                    } else {
-                        Toast.makeText(MenuActivity.this, "Failed to load restaurants.", Toast.LENGTH_SHORT).show();
-                    }
-                });
+//                        }
+//                    } else {
+//                        Toast.makeText(MenuActivity.this, "Failed to load restaurants.", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
     }
 
     // Show Order Summary when the button is clicked
