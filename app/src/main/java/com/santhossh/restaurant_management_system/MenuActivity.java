@@ -112,6 +112,7 @@ public class MenuActivity extends AppCompatActivity {
 //                        foodList.clear();
 //                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                             // Get the 'menu' sub-collection from each document
+
                             db.collection("food")
                                     .addSnapshotListener(new EventListener<QuerySnapshot>() {
                                         @Override

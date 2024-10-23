@@ -57,10 +57,8 @@ public class FeedbackActivity extends AppCompatActivity {
         float rating = ratingBar.getRating();
 
         if (name.isEmpty() || feedback.isEmpty()) {
-            Intent intent = new Intent(FeedbackActivity.this, LoginSelectionActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish(); // Finish the activity to prevent going back
+            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         // Save feedback to Firestore
