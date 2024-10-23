@@ -39,6 +39,12 @@
         <activity android:name=".ManagerHomeActivity"/>
         <activity android:name=".MenuActivity1"/>
         <activity android:name=".OrderStatusActivity1"/>
+        <activity android:name=".AddEmployeeActivity"/>
+        <activity android:name=".Homepage_Admin"/>
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".ManageEmployeeShiftsActivity"/>
+        <activity android:name=".ReportsActivity"/>
+        <activity android:name=".ViewEmployeeActivity"/>
 
     </application>
 

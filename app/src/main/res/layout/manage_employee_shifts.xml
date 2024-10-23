@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF"> <!-- Added padding to the layout -->
+
+    <!-- Toolbar for title and icon -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FF6750A4"
+        android:elevation="4dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"> <!-- Added padding to toolbar for more space -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- Image Icon -->
+            <ImageView
+                android:id="@+id/toolbar_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/vecteezy_restaurant_logo_template_in_white_background__modified"
+                android:layout_marginEnd="8dp" />
+
+            <!-- Title Text -->
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Manage Employee"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <!-- Employee Name Spinner (Dropdown) in a box -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:background="@drawable/box_background">
+
+        <Spinner
+            android:id="@+id/employeeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:hint="Select Employee"
+            android:minHeight="48dp"
+            android:padding="8dp" />
+    </LinearLayout>
+
+    <!-- Shift Type Spinner (Dropdown) in a box -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:background="@drawable/box_background"
+        android:layout_marginTop="16dp">
+
+        <Spinner
+            android:id="@+id/shiftTypeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:hint="Select Shift Type"
+            android:minHeight="48dp"
+            android:padding="8dp" />
+    </LinearLayout>
+
+    <!-- Confirm Button -->
+    <Button
+        android:id="@+id/confirmButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="32dp"
+        android:background="#4CAF50"
+        android:padding="12dp"
+        android:text="Confirm"
+        android:textColor="#263238" />
+
+</LinearLayout>

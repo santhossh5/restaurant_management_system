@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Top Toolbar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:weightSum="1">
+
+            <!-- Image Icon -->
+            <ImageView
+                android:id="@+id/toolbar_icon"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:src="@drawable/restaurant_logo"
+                android:layout_marginEnd="8dp" />
+
+            <!-- Title Text -->
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.9"
+                android:text="Manager Home"
+                android:textColor="@android:color/white"
+                android:textSize="21sp"
+                android:textStyle="bold" />
+
+            <!-- Logout Button (Material Icon) -->
+            <ImageView
+                android:id="@+id/btnLogout"
+                android:layout_width="21dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:layout_weight="0.08"
+                android:contentDescription="Logout"
+                android:padding="8dp"
+                android:src="@drawable/ic_logout" /> <!-- Material icon for logout -->
+        </LinearLayout>
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <!-- Main Content (Greeting, Buttons for different management options) -->
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="56dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_anchor="@+id/linearLayout"
+        app:layout_anchorGravity="center">
+
+        <!-- Professional Greeting -->
+        <TextView
+            android:id="@+id/tvWelcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"
+            android:text="Good Day, Manager!"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvSubGreeting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:text="Here's what lined up for today"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="16sp" />
+
+
+        <!-- Glowing Button for Staff Management -->
+        <Button
+            android:id="@+id/btnStaffManagement"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="#FF6750A4"
+            android:padding="16dp"
+            android:shadowColor="#FFBB86FC"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="10"
+            android:text="Staff Management"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+        <!-- Glowing Button for Order Status -->
+        <Button
+            android:id="@+id/btnOrderStatus"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="#FF6750A4"
+            android:padding="16dp"
+            android:shadowColor="#FFBB86FC"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="10"
+            android:text="Order Status"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+        <!-- Glowing Button for Menu Management -->
+        <Button
+            android:id="@+id/btnMenuManagement"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="#FF6750A4"
+            android:padding="16dp"
+            android:shadowColor="#FFBB86FC"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="10"
+            android:text="Menu Management"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+
+        <!-- Glowing Button for Inventory Management -->
+        <Button
+            android:id="@+id/btnInventoryManagement"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="#FF6750A4"
+            android:padding="16dp"
+            android:shadowColor="#FFBB86FC"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="10"
+            android:text="Inventory Management"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+        <!-- Glowing Button for FeedBack Management -->
+        <Button
+            android:id="@+id/btnFeedbackManagement"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="#FF6750A4"
+            android:padding="16dp"
+            android:shadowColor="#FFBB86FC"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="10"
+            android:text="Feedback Management"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

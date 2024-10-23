@@ -167,9 +167,11 @@ public class MenuActivity extends AppCompatActivity {
 
             // Find the food item by foodId and append to the summary
             for (Food food : foodList) {
-                orderSummary.append(foodId).append(": ").append(quantity).append("\n");
-                totalPrice += food.getPrice() * quantity; // Calculate total price
-                break;
+                if(food.getName().equals(foodId)) {
+                    orderSummary.append(foodId).append(": ").append(quantity).append("\n");
+                    totalPrice += food.getPrice() * quantity; // Calculate total price
+                    break;
+                }
             }
         }
 
