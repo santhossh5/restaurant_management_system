@@ -58,7 +58,7 @@ public class LoginActivity1 extends AppCompatActivity {
                                 startActivity(new Intent(LoginActivity1.this, ManagerHomeActivity.class));
                                 break;
                             case "Chef":
-                                startActivity(new Intent(LoginActivity1.this, ManagerHomeActivity.class));
+                                startActivity(new Intent(LoginActivity1.this, ChefHomePage.class));
                                 break;
                             case "Admin":
                                 startActivity(new Intent(LoginActivity1.this, Homepage_Admin.class));

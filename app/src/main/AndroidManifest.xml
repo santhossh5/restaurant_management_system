@@ -45,6 +45,10 @@
         <activity android:name=".ManageEmployeeShiftsActivity"/>
         <activity android:name=".ReportsActivity"/>
         <activity android:name=".ViewEmployeeActivity"/>
+        <activity android:name=".ChefHomePage"/>
+        <activity android:name=".UpdateInventoryActivity"/>
+        <activity android:name=".orderStatusActivityChef"/>
+        <activity android:name=".ViewOrdersActivity"/>
 
     </application>
 
