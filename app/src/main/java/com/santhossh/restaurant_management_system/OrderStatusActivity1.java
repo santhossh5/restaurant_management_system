@@ -90,54 +90,63 @@ public class OrderStatusActivity1 extends AppCompatActivity {
     private void fetchOrders() {
         // Specify the document ID directly
         String documentId = "oQNunJYjNaAQomaZ3COt";
-        Log.d(TAG, "Fetching orders from document ID: " + documentId);
+        Log.d(TAG, "Listening for real-time updates from document ID: " + documentId);
 
-        // Fetch all session IDs from the 'orders' collection
+        // Listen for real-time updates to the 'orders' collection
         db.collection("santhossh")
                 .document(documentId)
                 .collection("orders")
-                .get()
-                .addOnCompleteListener(orderTask -> {
-                    if (orderTask.isSuccessful() && orderTask.getResult() != null) {
-                        Log.d(TAG, "Order snapshots: " + orderTask.getResult().getDocuments().toString());
-                        Log.d(TAG, "Orders fetched successfully, count: " + orderTask.getResult().size());
+                .addSnapshotListener((orderTask, e) -> {
+                    if (e != null) {
+                        Log.e(TAG, "Listen failed.", e);
+                        Toast.makeText(OrderStatusActivity1.this, "Failed to load orders.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (orderTask != null) {
+                        Log.d(TAG, "Orders fetched successfully, count: " + orderTask.size());
                         orderList.clear(); // Clear previous orders
-                        for (QueryDocumentSnapshot orderSnapshot : orderTask.getResult()) {
+                        for (QueryDocumentSnapshot orderSnapshot : orderTask) {
                             String sessionId = orderSnapshot.getId(); // Get the session ID
                             Log.d(TAG, "Fetching food items for session ID: " + sessionId);
                             fetchFoodItems(documentId, sessionId); // Fetch food items for each session ID
                         }
                     } else {
-                        Log.e(TAG, "Failed to load orders.", orderTask.getException());
-                        Toast.makeText(OrderStatusActivity1.this, "Failed to load orders.", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "No orders found.");
+                        Toast.makeText(OrderStatusActivity1.this, "No orders found.", Toast.LENGTH_SHORT).show();
                     }
-                })
-                .addOnFailureListener(e -> {
-                    Log.e(TAG, "Error fetching orders: " + e.getMessage(), e);
-                    Toast.makeText(OrderStatusActivity1.this, "Error fetching orders: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 
+
     private void fetchFoodItems(String documentId, String sessionId) {
+        // Listen for real-time updates to the 'foods' sub-collection
         db.collection("santhossh")
                 .document(documentId)
                 .collection("orders")
                 .document(sessionId)  // The session ID document
                 .collection("foods")  // Sub-collection for food items
-                .get()
-                .addOnCompleteListener(foodTask -> {
-                    if (foodTask.isSuccessful() && foodTask.getResult() != null) {
+                .addSnapshotListener((foodTask, e) -> {
+                    if (e != null) {
+                        Log.e(TAG, "Listen for food items failed.", e);
+                        Toast.makeText(OrderStatusActivity1.this, "Failed to load food items.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (foodTask != null) {
+                        // Create a new order object for the current session
                         Order order = new Order();
                         order.setSessionId(sessionId); // Set the session ID for the order
 
                         Map<String, Integer> foodItems = new HashMap<>();
-                        for (QueryDocumentSnapshot foodSnapshot : foodTask.getResult()) {
+                        for (QueryDocumentSnapshot foodSnapshot : foodTask) {
                             String foodName = foodSnapshot.getString("name");
                             int quantity = foodSnapshot.getLong("quantity").intValue();
                             String orderStatus = foodSnapshot.getString("orderStatus");
                             String tableNumber = foodSnapshot.getString("tableNumber");
                             long timestamp = foodSnapshot.getLong("timestamp");
 
+                            // Set order details
                             order.setOrderStatus(orderStatus);
                             order.setTableNumber(tableNumber);
                             order.setTimestamp(timestamp);
@@ -145,15 +154,39 @@ public class OrderStatusActivity1 extends AppCompatActivity {
                         }
                         order.setItems(foodItems); // Set the food items in the order
 
-                        // Add the order to the orderList
-                        orderList.add(order);
-                        orderAdapter1.notifyDataSetChanged();  // Notify adapter about data changes
+                        // Update existing order or add new
+                        updateOrderInList(order);
                     } else {
                         Toast.makeText(OrderStatusActivity1.this, "Failed to load food items.", Toast.LENGTH_SHORT).show();
                     }
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(OrderStatusActivity1.this, "Error fetching food items: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
+    }
+
+
+    private void updateOrderInList(Order newOrder) {
+        boolean orderExists = false;
+
+        for (int i = 0; i < orderList.size(); i++) {
+            Order existingOrder = orderList.get(i);
+
+            // Check if the sessionId matches
+            if (existingOrder.getSessionId().equals(newOrder.getSessionId())) {
+                // Update the existing order
+                orderList.set(i, newOrder);
+                orderExists = true;
+                break;
+            }
+        }
+
+        // If the order does not exist, add it to the list
+        if (!orderExists) {
+            orderList.add(newOrder);
+        }
+
+        // Sort the orders by timestamp in descending order (most recent first)
+        orderList.sort((order1, order2) -> Long.compare(order2.getTimestamp(), order1.getTimestamp()));
+
+        // Notify adapter about changes
+        orderAdapter1.notifyDataSetChanged();
     }
 }

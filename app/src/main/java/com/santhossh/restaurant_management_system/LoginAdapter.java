@@ -18,10 +18,15 @@ public class LoginAdapter {
     // Fetch all employees from Firebase and store them in local data
     private void fetchAllEmployees() {
         db.collection("employees")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        // Handle any errors here
+                        return;
+                    }
+
+                    if (value != null) {
+                        employeeData.clear(); // Clear the local map to prevent duplicates
+                        for (QueryDocumentSnapshot document : value) {
                             Employee employee = document.toObject(Employee.class);
                             employeeData.put(employee.getEmail(), employee); // Store by email (username)
                         }

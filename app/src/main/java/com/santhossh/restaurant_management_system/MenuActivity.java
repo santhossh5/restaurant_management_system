@@ -116,18 +116,21 @@ public class MenuActivity extends AppCompatActivity {
                                     .addSnapshotListener(new EventListener<QuerySnapshot>() {
                                         @Override
                                         public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                                            // Create a temporary map to track current food items in Firestore
+                                            Map<String, Food> currentFoodMap = new HashMap<>();
                                             if (error != null) {
                                                 Toast.makeText(MenuActivity.this, "Failed to load menu.", Toast.LENGTH_SHORT).show();
                                                 return;
                                             }
 
                                             if (value != null) {
+
                                                 for (QueryDocumentSnapshot snapshot : value) {
                                                     Food food = snapshot.toObject(Food.class);
                                                     food.setId(snapshot.getId());
                                                     // Check if the food item is in stock
                                                     if (food.isInStock()) {
-                                                        foodList.add(food);
+                                                        currentFoodMap.put(food.getName(), food);
                                                         //Log.d("MenuActivity", "Food added: " + food.getName() + ", Price: " + food.getPrice());
                                                     } else {
                                                         Log.d("MenuActivity", "Food not in stock: " + food.getName());
@@ -135,6 +138,9 @@ public class MenuActivity extends AppCompatActivity {
                                                 }
                                             }
 
+                                            // Now update the foodList based on the current food map
+                                            foodList.clear(); // Clear the old list
+                                            foodList.addAll(currentFoodMap.values()); // Add the updated food list
                                             if (foodList.isEmpty()) {
                                                 Toast.makeText(MenuActivity.this, "No items available.", Toast.LENGTH_SHORT).show();
                                             }

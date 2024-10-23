@@ -1,5 +1,6 @@
 package com.santhossh.restaurant_management_system;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -56,8 +57,10 @@ public class FeedbackActivity extends AppCompatActivity {
         float rating = ratingBar.getRating();
 
         if (name.isEmpty() || feedback.isEmpty()) {
-            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
-            return;
+            Intent intent = new Intent(FeedbackActivity.this, LoginSelectionActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish(); // Finish the activity to prevent going back
         }
 
         // Save feedback to Firestore
@@ -71,7 +74,11 @@ public class FeedbackActivity extends AppCompatActivity {
                 .add(feedbackData)
                 .addOnSuccessListener(documentReference -> {
                     Toast.makeText(FeedbackActivity.this, "Thank you for your feedback!", Toast.LENGTH_SHORT).show();
-                    finish(); // Close the activity after submission
+                    // Proceed to the next activity
+                    Intent intent = new Intent(FeedbackActivity.this, LoginSelectionActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish(); // Finish the activity to prevent going back
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(FeedbackActivity.this, "Error submitting feedback", Toast.LENGTH_SHORT).show();

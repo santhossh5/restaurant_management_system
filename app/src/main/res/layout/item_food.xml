@@ -71,15 +71,15 @@
                     <!-- Decrement Button -->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/decrement_button"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        app:icon="@drawable/baseline_remove_24"
-                        app:iconTint="@android:color/white"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:contentDescription="Decrease quantity"
+                        android:padding="0dp"
                         app:backgroundTint="@android:color/holo_red_light"
                         app:cornerRadius="8dp"
+                        app:icon="@drawable/baseline_remove_24"
                         app:iconSize="24dp"
-                        android:contentDescription="Decrease quantity"
-                        android:padding="0dp" />
+                        app:iconTint="@android:color/white" />
 
                     <!-- Quantity Text -->
                     <TextView
@@ -95,15 +95,15 @@
                     <!-- Increment Button -->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/increment_button"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        app:icon="@drawable/baseline_add_24"
-                        app:iconTint="@android:color/white"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:contentDescription="Increase quantity"
+                        android:padding="0dp"
                         app:backgroundTint="@android:color/holo_blue_light"
                         app:cornerRadius="8dp"
+                        app:icon="@drawable/baseline_add_24"
                         app:iconSize="24dp"
-                        android:contentDescription="Increase quantity"
-                        android:padding="0dp" />
+                        app:iconTint="@android:color/white" />
                 </LinearLayout>
 
             </LinearLayout>

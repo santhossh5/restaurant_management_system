@@ -41,11 +41,11 @@ public class CheckoutActivity extends AppCompatActivity {
         textTotalAmount = findViewById(R.id.text_total_amount);
         recyclerOrderItems = findViewById(R.id.recycler_order_items);
         btnPlaceOrder = findViewById(R.id.btn_place_order);
-        Button btnGiveFeedback = findViewById(R.id.btn_give_feedback);
-        btnGiveFeedback.setOnClickListener(view -> {
-            Intent intent = new Intent(CheckoutActivity.this, FeedbackActivity.class);
-            startActivity(intent);
-        });
+//        Button btnGiveFeedback = findViewById(R.id.btn_give_feedback);
+//        btnGiveFeedback.setOnClickListener(view -> {
+//            Intent intent = new Intent(CheckoutActivity.this, FeedbackActivity.class);
+//            startActivity(intent);
+//        });
 
         toolbar.setNavigationOnClickListener(v -> finish());
         // Initialize Firestore
@@ -64,6 +64,8 @@ public class CheckoutActivity extends AppCompatActivity {
         btnPlaceOrder.setOnClickListener(view -> {
             Toast.makeText(CheckoutActivity.this, "Order placed successfully!", Toast.LENGTH_SHORT).show();
             // Handle checkout logic (e.g., update Firestore order status, etc.)
+            Intent intent = new Intent(CheckoutActivity.this, FeedbackActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -97,7 +99,7 @@ public class CheckoutActivity extends AppCompatActivity {
                         // Update the total amount
                         totalAmount += itemTotal;
                     }
-                    Toast.makeText(CheckoutActivity.this, "Total Amount:"+totalAmount, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(CheckoutActivity.this, "Total Amount:"+totalAmount, Toast.LENGTH_SHORT).show();
 
                     // Update total amount in the UI
                     textTotalAmount.setText("Total: ₹" + String.format("%.2f", totalAmount));
