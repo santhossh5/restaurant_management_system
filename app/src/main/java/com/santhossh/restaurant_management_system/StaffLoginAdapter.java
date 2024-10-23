@@ -5,12 +5,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoginAdapter {
+public class StaffLoginAdapter {
 
     private Map<String, Employee> employeeData = new HashMap<>();
     private FirebaseFirestore db;
 
-    public LoginAdapter() {
+    public StaffLoginAdapter() {
         db = FirebaseFirestore.getInstance();
         fetchAllEmployees();
     }

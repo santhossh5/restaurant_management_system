@@ -1,6 +1,6 @@
 package com.santhossh.restaurant_management_system;
 
-public class Food {
+public class Customer_Food {
 
     private String id;          // Unique identifier for the food item
     private String name;        // Name of the food item
@@ -10,10 +10,10 @@ public class Food {
     private boolean inStock; // New field for stock status
 
     // Empty constructor (required for Firebase)
-    public Food() {}
+    public Customer_Food() {}
 
     // Constructor with fields
-    public Food(String id, String name, String description, double price,String imageUrl, boolean inStock) {
+    public Customer_Food(String id, String name, String description, double price, String imageUrl, boolean inStock) {
         this.id = id;
         this.name = name;
         this.description = description;

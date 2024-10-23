@@ -30,15 +30,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".WorkerLoginPage"/>
-        <activity android:name=".MenuActivity"/>
+        <activity android:name=".Customer_MenuActivity"/>
         <activity android:name=".TableNumberActivity"/>
-        <activity android:name=".OrderStatusActivity"/>
-        <activity android:name=".CheckoutActivity"/>
-        <activity android:name=".FeedbackActivity"/>
-        <activity android:name=".LoginActivity1"/>
+        <activity android:name=".Customer_OrderStatusActivity"/>
+        <activity android:name=".Customer_CheckoutActivity"/>
+        <activity android:name=".Customer_FeedbackActivity"/>
+        <activity android:name=".StaffLoginActivity"/>
         <activity android:name=".ManagerHomeActivity"/>
-        <activity android:name=".MenuActivity1"/>
-        <activity android:name=".OrderStatusActivity1"/>
+        <activity android:name=".ManagerMenuActivity"/>
+        <activity android:name=".ManagerOrderStatusActivity"/>
         <activity android:name=".AddEmployeeActivity"/>
         <activity android:name=".Homepage_Admin"/>
         <activity android:name=".MainActivity"/>
@@ -49,6 +49,11 @@
         <activity android:name=".UpdateInventoryActivity"/>
         <activity android:name=".orderStatusActivityChef"/>
         <activity android:name=".ViewOrdersActivity"/>
+        <activity android:name=".AssignWaitersActivity_Laks"/>
+        <activity android:name=".FeedbackActivity_laks"/>
+        <activity android:name=".InventoryActivity_laks"/>
+        <activity android:name=".MainActivity_laks"/>
+        <activity android:name=".WaiterHomePageActivity"/>
 
     </application>
 

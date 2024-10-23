@@ -24,11 +24,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MenuActivity1 extends AppCompatActivity {
+public class ManagerMenuActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private MenuAdapter menuAdapter;
-    private List<FoodItem> foodItemList;
+    private ManagerMenuAdapter managerMenuAdapter;
+    private List<ManagerFoodItem> managerFoodItemList;
     private Button btnConfirmChanges;
     private FirebaseFirestore db;
     private ImageView btnLogout; // Logout button
@@ -37,15 +37,15 @@ public class MenuActivity1 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu1);
+        setContentView(R.layout.manager_activity_menu);
 
         // Initialize Firestore, RecyclerView, and Logout button
         db = FirebaseFirestore.getInstance();
         recyclerView = findViewById(R.id.recyclerViewMenu);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        foodItemList = new ArrayList<>();
-        menuAdapter = new MenuAdapter(foodItemList, this::showConfirmChangesButton);
-        recyclerView.setAdapter(menuAdapter);
+        managerFoodItemList = new ArrayList<>();
+        managerMenuAdapter = new ManagerMenuAdapter(managerFoodItemList, this::showConfirmChangesButton);
+        recyclerView.setAdapter(managerMenuAdapter);
 
         // Confirm changes button
         btnConfirmChanges = findViewById(R.id.btnConfirmChanges);
@@ -65,7 +65,7 @@ public class MenuActivity1 extends AppCompatActivity {
 
         // Handle confirm button click
         btnConfirmChanges.setOnClickListener(v -> {
-            Map<String, Boolean> selectedItems = menuAdapter.getSelectedItems();
+            Map<String, Boolean> selectedItems = managerMenuAdapter.getSelectedItems();
             Map<String, Boolean> updates = new HashMap<>();
 
             // Create a map of updates for each item
@@ -99,13 +99,13 @@ public class MenuActivity1 extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (DocumentSnapshot document : task.getResult()) {
-                            FoodItem item = document.toObject(FoodItem.class);
+                            ManagerFoodItem item = document.toObject(ManagerFoodItem.class);
                             if (item != null) {
                                 item.setId(document.getId());
-                                foodItemList.add(item);
+                                managerFoodItemList.add(item);
                             }
                         }
-                        menuAdapter.notifyDataSetChanged();
+                        managerMenuAdapter.notifyDataSetChanged();
                     } else {
                         Log.d("Firestore", "Error getting documents: ", task.getException());
                     }
@@ -120,7 +120,7 @@ public class MenuActivity1 extends AppCompatActivity {
     // Function to show the logout confirmation dialog
     private void showLogoutConfirmationDialog() {
         // Create an AlertDialog
-        new AlertDialog.Builder(MenuActivity1.this)
+        new AlertDialog.Builder(ManagerMenuActivity.this)
                 .setTitle("Logout")
                 .setMessage("Are you sure you want to logout?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -128,7 +128,7 @@ public class MenuActivity1 extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         // If the user confirms, proceed to logout
                         FirebaseAuth.getInstance().signOut(); // Sign out the user
-                        Intent intent = new Intent(MenuActivity1.this, LoginActivity1.class);
+                        Intent intent = new Intent(ManagerMenuActivity.this, StaffLoginActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Clear activity stack
                         startActivity(intent); // Redirect to LoginActivity1
                         finish(); // Close current activity

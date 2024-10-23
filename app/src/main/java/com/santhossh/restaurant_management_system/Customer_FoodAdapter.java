@@ -16,14 +16,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder> {
+public class Customer_FoodAdapter extends RecyclerView.Adapter<Customer_FoodAdapter.FoodViewHolder> {
 
-    private List<Food> foodList;
+    private List<Customer_Food> customerFoodList;
     // Map to store the selected quantities for each food item
     private Map<String, Integer> orderMap = new HashMap<>();
 
-    public FoodAdapter(List<Food> foodList) {
-        this.foodList = foodList;
+    public Customer_FoodAdapter(List<Customer_Food> customerFoodList) {
+        this.customerFoodList = customerFoodList;
     }
 
     @NonNull
@@ -35,25 +35,25 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull FoodViewHolder holder, int position) {
-        Food food = foodList.get(position);
-        holder.textFoodName.setText(food.getName());
-        holder.textFoodDescription.setText(food.getDescription());
-        holder.textFoodPrice.setText("₹" + food.getPrice());
+        Customer_Food customerFood = customerFoodList.get(position);
+        holder.textFoodName.setText(customerFood.getName());
+        holder.textFoodDescription.setText(customerFood.getDescription());
+        holder.textFoodPrice.setText("₹" + customerFood.getPrice());
         // Load image using Glide
         Glide.with(holder.itemView.getContext())
-                .load(food.getImageUrl()) // Load image from Firebase Storage URL
+                .load(customerFood.getImageUrl()) // Load image from Firebase Storage URL
                 .into(holder.foodImageView); // ImageView where the image will be loaded
 
 
         // Set initial quantity to 0 (or from the order map if already selected)
-        holder.textQuantity.setText(String.valueOf(orderMap.getOrDefault(food.getName(), 0)));
+        holder.textQuantity.setText(String.valueOf(orderMap.getOrDefault(customerFood.getName(), 0)));
 
         // Increment button logic
         holder.incrementButton.setOnClickListener(v -> {
             int currentQuantity = Integer.parseInt(holder.textQuantity.getText().toString());
             currentQuantity++;
             holder.textQuantity.setText(String.valueOf(currentQuantity));
-            orderMap.put(food.getName(), currentQuantity); // Update the quantity in the order map
+            orderMap.put(customerFood.getName(), currentQuantity); // Update the quantity in the order map
         });
 
         // Decrement button logic
@@ -63,9 +63,9 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
                 currentQuantity--;
                 holder.textQuantity.setText(String.valueOf(currentQuantity));
                 if (currentQuantity == 0) {
-                    orderMap.remove(food.getName()); // Remove from order map if quantity is 0
+                    orderMap.remove(customerFood.getName()); // Remove from order map if quantity is 0
                 } else {
-                    orderMap.put(food.getName(), currentQuantity); // Update the quantity in the order map
+                    orderMap.put(customerFood.getName(), currentQuantity); // Update the quantity in the order map
                 }
             }
         });
@@ -73,7 +73,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
 
     @Override
     public int getItemCount() {
-        return foodList.size();
+        return customerFoodList.size();
     }
 
     // Method to reset the order map

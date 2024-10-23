@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class OrderManager {
 
     private static OrderManager instance;
-    private Order currentOrder;
+    private Customer_Order currentCustomerOrder;
     private String sessionId;
 
     private OrderManager() {
@@ -23,24 +23,24 @@ public class OrderManager {
     public void createNewOrder(String tableNumber) {
         // Generate a new session ID
         sessionId = java.util.UUID.randomUUID().toString();
-        currentOrder = new Order();
-        currentOrder.setTableNumber(tableNumber);
-        currentOrder.setSessionId(sessionId);
-        currentOrder.setTimestamp(System.currentTimeMillis());
-        currentOrder.setItems(new HashMap<>());
-        currentOrder.setOrderStatus("Pending");
+        currentCustomerOrder = new Customer_Order();
+        currentCustomerOrder.setTableNumber(tableNumber);
+        currentCustomerOrder.setSessionId(sessionId);
+        currentCustomerOrder.setTimestamp(System.currentTimeMillis());
+        currentCustomerOrder.setItems(new HashMap<>());
+        currentCustomerOrder.setOrderStatus("Pending");
     }
 
     public String getSessionId() {
         return sessionId;
     }
 
-    public Order getCurrentOrder() {
-        return currentOrder;
+    public Customer_Order getCurrentOrder() {
+        return currentCustomerOrder;
     }
 
     public void clearOrder() {
-        currentOrder = null;
+        currentCustomerOrder = null;
         sessionId = null;
     }
 }

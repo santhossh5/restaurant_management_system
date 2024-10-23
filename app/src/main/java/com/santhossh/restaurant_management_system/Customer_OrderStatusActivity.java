@@ -20,11 +20,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class    OrderStatusActivity extends AppCompatActivity {
+public class Customer_OrderStatusActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private OrderAdapter orderAdapter;
-    private List<Order> orderList;
+    private Customer_OrderAdapter customerOrderAdapter;
+    private List<Customer_Order> customerOrderList;
     private FirebaseFirestore db;
     private ListenerRegistration registration;
     private BottomNavigationView bottomNavigationView;
@@ -42,9 +42,9 @@ public class    OrderStatusActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view_orders);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        orderList = new ArrayList<>();
-        orderAdapter = new OrderAdapter(orderList);
-        recyclerView.setAdapter(orderAdapter);
+        customerOrderList = new ArrayList<>();
+        customerOrderAdapter = new Customer_OrderAdapter(customerOrderList);
+        recyclerView.setAdapter(customerOrderAdapter);
 
         db = FirebaseFirestore.getInstance();  // Initialize Firestore
 
@@ -61,11 +61,11 @@ public class    OrderStatusActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
                 if (itemId == R.id.action_menu) {
-                    startActivity(new Intent(OrderStatusActivity.this, MenuActivity.class));
+                    startActivity(new Intent(Customer_OrderStatusActivity.this, Customer_MenuActivity.class));
                     overridePendingTransition(0, 0);
                     return true;
                 } else if (itemId == R.id.action_home) {
-                    startActivity(new Intent(OrderStatusActivity.this, CustomerHomePage.class));
+                    startActivity(new Intent(Customer_OrderStatusActivity.this, CustomerHomePage.class));
                     overridePendingTransition(0, 0);
                     return true;
                 } else if (itemId == R.id.action_order_status) {
@@ -115,28 +115,28 @@ public class    OrderStatusActivity extends AppCompatActivity {
                                 .get()
                                 .addOnCompleteListener(foodTask -> {
                                     if (foodTask.isSuccessful()) {
-                                        orderList.clear(); // Clear previous orders
+                                        customerOrderList.clear(); // Clear previous orders
                                         for (QueryDocumentSnapshot foodSnapshot : foodTask.getResult()) {
                                             // Create a new Order object from the food data
-                                            Order order = new Order();
-                                            order.setSessionId(sessionId);
-                                            order.setOrderStatus(foodSnapshot.getString("orderStatus"));
-                                            order.setTableNumber(foodSnapshot.getString("tableNumber"));
-                                            order.setTimestamp(foodSnapshot.getLong("timestamp"));
+                                            Customer_Order customerOrder = new Customer_Order();
+                                            customerOrder.setSessionId(sessionId);
+                                            customerOrder.setOrderStatus(foodSnapshot.getString("orderStatus"));
+                                            customerOrder.setTableNumber(foodSnapshot.getString("tableNumber"));
+                                            customerOrder.setTimestamp(foodSnapshot.getLong("timestamp"));
 
                                             // Create a map for food items (name to quantity)
                                             Map<String, Integer> foodItems = new HashMap<>();
                                             String foodName = foodSnapshot.getString("name");
                                             int quantity = foodSnapshot.getLong("quantity").intValue();
                                             foodItems.put(foodName, quantity);
-                                            order.setItems(foodItems); // Set the food items in the order
+                                            customerOrder.setItems(foodItems); // Set the food items in the order
 
                                             // Add the order to the orderList
-                                            orderList.add(order);
+                                            customerOrderList.add(customerOrder);
                                         }
-                                        orderAdapter.notifyDataSetChanged();  // Notify adapter about data changes
+                                        customerOrderAdapter.notifyDataSetChanged();  // Notify adapter about data changes
                                     } else {
-                                        Toast.makeText(OrderStatusActivity.this, "Failed to load food items.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(Customer_OrderStatusActivity.this, "Failed to load food items.", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                     } else {

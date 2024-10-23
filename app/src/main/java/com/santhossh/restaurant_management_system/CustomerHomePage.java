@@ -36,7 +36,7 @@ public class CustomerHomePage extends AppCompatActivity {
         btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CustomerHomePage.this, CheckoutActivity.class);
+                Intent intent = new Intent(CustomerHomePage.this, Customer_CheckoutActivity.class);
                 startActivity(intent);
             }
         });
@@ -55,14 +55,14 @@ public class CustomerHomePage extends AppCompatActivity {
 
                 if (itemId == R.id.action_menu) {
                     // Navigate to the MenuActivity
-                    startActivity(new Intent(CustomerHomePage.this, MenuActivity.class));
+                    startActivity(new Intent(CustomerHomePage.this, Customer_MenuActivity.class));
                     return true;
                 } else if (itemId == R.id.action_home) {
                     // Stay on the same activity (Home)
                     return true;
                 } else if (itemId == R.id.action_order_status) {
                     // Navigate to the OrderStatusActivity
-                    startActivity(new Intent(CustomerHomePage.this, OrderStatusActivity.class));
+                    startActivity(new Intent(CustomerHomePage.this, Customer_OrderStatusActivity.class));
                     return true;
                 } else {
                     return false;

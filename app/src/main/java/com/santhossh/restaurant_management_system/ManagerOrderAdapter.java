@@ -17,40 +17,40 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class OrderAdapter1 extends RecyclerView.Adapter<OrderAdapter1.OrderViewHolder> {
+public class ManagerOrderAdapter extends RecyclerView.Adapter<ManagerOrderAdapter.OrderViewHolder> {
 
     private Context context;
-    private List<Order> orderList;
+    private List<Customer_Order> customerOrderList;
 
-    public OrderAdapter1(OrderStatusActivity1 orderStatusActivity1, List<Order> orderList) {
+    public ManagerOrderAdapter(ManagerOrderStatusActivity managerOrderStatusActivity, List<Customer_Order> customerOrderList) {
         this.context = context;
-        this.orderList = orderList;
+        this.customerOrderList = customerOrderList;
     }
 
     @NonNull
     @Override
     public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.manager_item_order, parent, false);
         return new OrderViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
-        Order order = orderList.get(position);
+        Customer_Order customerOrder = customerOrderList.get(position);
 
-        if (order != null) {
-            holder.tableNumber.setText("Table Number: " + order.getTableNumber());
-            holder.orderStatus.setText("Order Status: " + order.getOrderStatus());
-            holder.timestamp.setText("Timestamp: " + formatTimestamp(order.getTimestamp()));
+        if (customerOrder != null) {
+            holder.tableNumber.setText("Table Number: " + customerOrder.getTableNumber());
+            holder.orderStatus.setText("Order Status: " + customerOrder.getOrderStatus());
+            holder.timestamp.setText("Timestamp: " + formatTimestamp(customerOrder.getTimestamp()));
 
             // Display items (map of food IDs to quantities)
             StringBuilder itemsStringBuilder = new StringBuilder();
-            for (Map.Entry<String, Integer> entry : order.getItems().entrySet()) {
+            for (Map.Entry<String, Integer> entry : customerOrder.getItems().entrySet()) {
                 itemsStringBuilder.append("").append(entry.getKey())
                         .append(",\t\t\tQuantity: ").append(entry.getValue()).append("\n");
             }
             holder.items.setText("Items: \n" + itemsStringBuilder.toString());
-            Log.d("OrderAdapter", "Binding order: " + order.getTableNumber());
+            Log.d("OrderAdapter", "Binding order: " + customerOrder.getTableNumber());
         } else {
             Log.e("OrderAdapter", "Order is null at position: " + position);
         }
@@ -59,7 +59,7 @@ public class OrderAdapter1 extends RecyclerView.Adapter<OrderAdapter1.OrderViewH
 
     @Override
     public int getItemCount() {
-        return orderList.size();
+        return customerOrderList.size();
     }
 
     // ViewHolder class

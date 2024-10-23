@@ -22,11 +22,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class OrderStatusActivity1 extends AppCompatActivity {
+public class ManagerOrderStatusActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private OrderAdapter1 orderAdapter1;
-    private List<Order> orderList;
+    private ManagerOrderAdapter managerOrderAdapter;
+    private List<Customer_Order> customerOrderList;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth; // Firebase Authentication instance
     private ImageView btnLogout; // Logout button
@@ -36,7 +36,7 @@ public class OrderStatusActivity1 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_status);
+        setContentView(R.layout.manager_activity_order_status);
 
         // Initialize FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
@@ -45,9 +45,9 @@ public class OrderStatusActivity1 extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        orderList = new ArrayList<>();
-        orderAdapter1 = new OrderAdapter1(this, orderList);
-        recyclerView.setAdapter(orderAdapter1);
+        customerOrderList = new ArrayList<>();
+        managerOrderAdapter = new ManagerOrderAdapter(this, customerOrderList);
+        recyclerView.setAdapter(managerOrderAdapter);
 
         // Initialize Firestore
         db = FirebaseFirestore.getInstance();
@@ -69,7 +69,7 @@ public class OrderStatusActivity1 extends AppCompatActivity {
     // Function to show the logout confirmation dialog
     private void showLogoutConfirmationDialog() {
         // Create an AlertDialog
-        new AlertDialog.Builder(OrderStatusActivity1.this)
+        new AlertDialog.Builder(ManagerOrderStatusActivity.this)
                 .setTitle("Logout")
                 .setMessage("Are you sure you want to logout?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -77,7 +77,7 @@ public class OrderStatusActivity1 extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         // If the user confirms, proceed to logout
                         mAuth.signOut(); // Sign out the user
-                        Intent intent = new Intent(OrderStatusActivity1.this, LoginActivity1.class);
+                        Intent intent = new Intent(ManagerOrderStatusActivity.this, StaffLoginActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Clear activity stack
                         startActivity(intent); // Redirect to LoginActivity1
                         finish(); // Close current activity
@@ -99,13 +99,13 @@ public class OrderStatusActivity1 extends AppCompatActivity {
                 .addSnapshotListener((orderTask, e) -> {
                     if (e != null) {
                         Log.e(TAG, "Listen failed.", e);
-                        Toast.makeText(OrderStatusActivity1.this, "Failed to load orders.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ManagerOrderStatusActivity.this, "Failed to load orders.", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     if (orderTask != null) {
                         Log.d(TAG, "Orders fetched successfully, count: " + orderTask.size());
-                        orderList.clear(); // Clear previous orders
+                        customerOrderList.clear(); // Clear previous orders
                         for (QueryDocumentSnapshot orderSnapshot : orderTask) {
                             String sessionId = orderSnapshot.getId(); // Get the session ID
                             Log.d(TAG, "Fetching food items for session ID: " + sessionId);
@@ -113,7 +113,7 @@ public class OrderStatusActivity1 extends AppCompatActivity {
                         }
                     } else {
                         Log.e(TAG, "No orders found.");
-                        Toast.makeText(OrderStatusActivity1.this, "No orders found.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ManagerOrderStatusActivity.this, "No orders found.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -129,14 +129,14 @@ public class OrderStatusActivity1 extends AppCompatActivity {
                 .addSnapshotListener((foodTask, e) -> {
                     if (e != null) {
                         Log.e(TAG, "Listen for food items failed.", e);
-                        Toast.makeText(OrderStatusActivity1.this, "Failed to load food items.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ManagerOrderStatusActivity.this, "Failed to load food items.", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     if (foodTask != null) {
                         // Create a new order object for the current session
-                        Order order = new Order();
-                        order.setSessionId(sessionId); // Set the session ID for the order
+                        Customer_Order customerOrder = new Customer_Order();
+                        customerOrder.setSessionId(sessionId); // Set the session ID for the order
 
                         Map<String, Integer> foodItems = new HashMap<>();
                         for (QueryDocumentSnapshot foodSnapshot : foodTask) {
@@ -147,32 +147,32 @@ public class OrderStatusActivity1 extends AppCompatActivity {
                             long timestamp = foodSnapshot.getLong("timestamp");
 
                             // Set order details
-                            order.setOrderStatus(orderStatus);
-                            order.setTableNumber(tableNumber);
-                            order.setTimestamp(timestamp);
+                            customerOrder.setOrderStatus(orderStatus);
+                            customerOrder.setTableNumber(tableNumber);
+                            customerOrder.setTimestamp(timestamp);
                             foodItems.put(foodName, quantity);
                         }
-                        order.setItems(foodItems); // Set the food items in the order
+                        customerOrder.setItems(foodItems); // Set the food items in the order
 
                         // Update existing order or add new
-                        updateOrderInList(order);
+                        updateOrderInList(customerOrder);
                     } else {
-                        Toast.makeText(OrderStatusActivity1.this, "Failed to load food items.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ManagerOrderStatusActivity.this, "Failed to load food items.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
 
-    private void updateOrderInList(Order newOrder) {
+    private void updateOrderInList(Customer_Order newCustomerOrder) {
         boolean orderExists = false;
 
-        for (int i = 0; i < orderList.size(); i++) {
-            Order existingOrder = orderList.get(i);
+        for (int i = 0; i < customerOrderList.size(); i++) {
+            Customer_Order existingCustomerOrder = customerOrderList.get(i);
 
             // Check if the sessionId matches
-            if (existingOrder.getSessionId().equals(newOrder.getSessionId())) {
+            if (existingCustomerOrder.getSessionId().equals(newCustomerOrder.getSessionId())) {
                 // Update the existing order
-                orderList.set(i, newOrder);
+                customerOrderList.set(i, newCustomerOrder);
                 orderExists = true;
                 break;
             }
@@ -180,13 +180,13 @@ public class OrderStatusActivity1 extends AppCompatActivity {
 
         // If the order does not exist, add it to the list
         if (!orderExists) {
-            orderList.add(newOrder);
+            customerOrderList.add(newCustomerOrder);
         }
 
         // Sort the orders by timestamp in descending order (most recent first)
-        orderList.sort((order1, order2) -> Long.compare(order2.getTimestamp(), order1.getTimestamp()));
+        customerOrderList.sort((order1, order2) -> Long.compare(order2.getTimestamp(), order1.getTimestamp()));
 
         // Notify adapter about changes
-        orderAdapter1.notifyDataSetChanged();
+        managerOrderAdapter.notifyDataSetChanged();
     }
 }

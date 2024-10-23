@@ -22,7 +22,7 @@ public class ManagerHomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manager_home);
+        setContentView(R.layout.manager_activity_home);
 
         // Initialize FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
@@ -38,7 +38,7 @@ public class ManagerHomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Open Menu Management Activity
-                Intent intent = new Intent(ManagerHomeActivity.this, MenuActivity1.class);
+                Intent intent = new Intent(ManagerHomeActivity.this, ManagerMenuActivity.class);
                 startActivity(intent);
             }
         });
@@ -47,7 +47,7 @@ public class ManagerHomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Open Order Status Activity
-                Intent intent = new Intent(ManagerHomeActivity.this, OrderStatusActivity1.class);
+                Intent intent = new Intent(ManagerHomeActivity.this, ManagerOrderStatusActivity.class);
                 startActivity(intent);
             }
         });
@@ -56,7 +56,7 @@ public class ManagerHomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Open Staff Management Activity (Currently null)
-                Intent intent = null;
+                Intent intent = new Intent(ManagerHomeActivity.this, AssignWaitersActivity_Laks.class);
                 startActivity(intent);
             }
         });
@@ -65,7 +65,7 @@ public class ManagerHomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Open Inventory Management Activity (Currently null)
-                Intent intent = null;
+                Intent intent = new Intent(ManagerHomeActivity.this, InventoryActivity_laks.class);
                 startActivity(intent);
             }
         });
@@ -73,8 +73,7 @@ public class ManagerHomeActivity extends AppCompatActivity {
         btnFeedbackManagement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Open Feedback Management Activity (Currently null)
-                Intent intent = null;
+                Intent intent = new Intent(ManagerHomeActivity.this, MainActivity_laks.class);
                 startActivity(intent);
             }
         });
@@ -99,7 +98,7 @@ public class ManagerHomeActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         // If the user confirms, proceed to logout
                         mAuth.signOut(); // Sign out the user
-                        Intent intent = new Intent(ManagerHomeActivity.this, LoginActivity1.class);
+                        Intent intent = new Intent(ManagerHomeActivity.this, StaffLoginActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Clear activity stack
                         startActivity(intent); // Redirect to LoginActivity1
                         finish(); // Close current activity

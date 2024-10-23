@@ -5,7 +5,7 @@
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MenuActivity">
+    tools:context=".Customer_MenuActivity">
 
     <!-- Top Toolbar -->
     <androidx.appcompat.widget.Toolbar
@@ -44,7 +44,7 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <!-- RecyclerView for the food menu -->
+    <!-- RecyclerView for the customerFood menu -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_food"
         android:layout_width="0dp"

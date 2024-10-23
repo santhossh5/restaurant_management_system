@@ -10,12 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import java.util.Map;
 
-public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
+public class Customer_OrderAdapter extends RecyclerView.Adapter<Customer_OrderAdapter.OrderViewHolder> {
 
-    private final List<Order> orderList;
+    private final List<Customer_Order> customerOrderList;
 
-    public OrderAdapter(List<Order> orderList) {
-        this.orderList = orderList;
+    public Customer_OrderAdapter(List<Customer_Order> customerOrderList) {
+        this.customerOrderList = customerOrderList;
     }
 
     @NonNull
@@ -27,13 +27,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
-        Order order = orderList.get(position);
-        holder.bind(order);
+        Customer_Order customerOrder = customerOrderList.get(position);
+        holder.bind(customerOrder);
     }
 
     @Override
     public int getItemCount() {
-        return orderList.size();
+        return customerOrderList.size();
     }
 
     static class OrderViewHolder extends RecyclerView.ViewHolder {
@@ -48,19 +48,19 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             orderTimestamp = itemView.findViewById(R.id.text_order_timestamp);
         }
 
-        public void bind(Order order) {
+        public void bind(Customer_Order customerOrder) {
             // Convert timestamp to a human-readable format (optional)
-            String formattedTimestamp = java.text.DateFormat.getDateTimeInstance().format(order.getTimestamp());
+            String formattedTimestamp = java.text.DateFormat.getDateTimeInstance().format(customerOrder.getTimestamp());
 
             StringBuilder orderSummary = new StringBuilder();
-            for(Map.Entry<String, Integer> entry : order.getItems().entrySet()) {
+            for(Map.Entry<String, Integer> entry : customerOrder.getItems().entrySet()) {
                 String foodName = entry.getKey();
                 int quantity = entry.getValue();
                 orderSummary.append(foodName).append(": ").append(quantity).append("\n");
             }
             // Bind data to the views
             orderItems.setText(orderSummary);
-            orderStatus.setText("Status: " + order.getOrderStatus());
+            orderStatus.setText("Status: " + customerOrder.getOrderStatus());
             orderTimestamp.setText("Ordered on: " + formattedTimestamp);
         }
     }

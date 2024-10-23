@@ -29,7 +29,7 @@ public class orderStatusActivityChef extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private orderAdapterChef orderAdapter1;
-    private List<Order> orderList;
+    private List<Customer_Order> orderList;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth; // Firebase Authentication instance
     private ImageView btnLogout; // Logout button
@@ -39,7 +39,7 @@ public class orderStatusActivityChef extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_orders);
+        setContentView(R.layout.activity_order_status);
 
         // Initialize FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
@@ -123,27 +123,35 @@ public class orderStatusActivityChef extends AppCompatActivity {
                 .get()
                 .addOnCompleteListener(foodTask -> {
                     if (foodTask.isSuccessful() && foodTask.getResult() != null) {
-                        Order order = new Order();
+                        Customer_Order order = new Customer_Order();
                         order.setSessionId(sessionId);
 
                         Map<String, Integer> foodItems = new HashMap<>();
+                        String orderStatus = null;
+                        String tableNumber = null;
+                        long timestamp = 0;
+
                         for (QueryDocumentSnapshot foodSnapshot : foodTask.getResult()) {
                             String foodName = foodSnapshot.getString("name");
                             int quantity = foodSnapshot.getLong("quantity").intValue();
-                            String orderStatus = foodSnapshot.getString("orderStatus");
-                            String tableNumber = foodSnapshot.getString("tableNumber");
-                            long timestamp = foodSnapshot.getLong("timestamp");
+                            orderStatus = foodSnapshot.getString("orderStatus");
+                            tableNumber = foodSnapshot.getString("tableNumber");
+                            timestamp = foodSnapshot.getLong("timestamp");
 
+                            foodItems.put(foodName, quantity);
+                        }
+
+                        // Check if the order status is not "Delivered"
+                        if (!"Delivered".equalsIgnoreCase(orderStatus)) {
                             order.setOrderStatus(orderStatus);
                             order.setTableNumber(tableNumber);
                             order.setTimestamp(timestamp);
-                            foodItems.put(foodName, quantity);
-                        }
-                        order.setItems(foodItems);
+                            order.setItems(foodItems);
 
-                        // Add the order to the orderList
-                        orderList.add(order);
-                        orderAdapter1.notifyDataSetChanged();
+                            // Add the order to the orderList
+                            orderList.add(order);
+                            orderAdapter1.notifyDataSetChanged();
+                        }
                     } else {
                         Toast.makeText(orderStatusActivityChef.this, "Failed to load food items.", Toast.LENGTH_SHORT).show();
                     }

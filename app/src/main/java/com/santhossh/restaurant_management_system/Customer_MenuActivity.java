@@ -29,11 +29,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MenuActivity extends AppCompatActivity {
+public class Customer_MenuActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private FoodAdapter foodAdapter;
-    public List<Food> foodList;
+    private Customer_FoodAdapter customerFoodAdapter;
+    public List<Customer_Food> customerFoodList;
     private FirebaseFirestore db;
     private ListenerRegistration registration;
     private BottomNavigationView bottomNavigationView;
@@ -52,9 +52,9 @@ public class MenuActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view_food);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        foodList = new ArrayList<>();
-        foodAdapter = new FoodAdapter(foodList);
-        recyclerView.setAdapter(foodAdapter);
+        customerFoodList = new ArrayList<>();
+        customerFoodAdapter = new Customer_FoodAdapter(customerFoodList);
+        recyclerView.setAdapter(customerFoodAdapter);
 
         db = FirebaseFirestore.getInstance();  // Initialize Firestore
 
@@ -75,10 +75,10 @@ public class MenuActivity extends AppCompatActivity {
                 if (itemId == R.id.action_menu) {
                     return true; // Already in MenuActivity
                 } else if (itemId == R.id.action_home) {
-                    startActivity(new Intent(MenuActivity.this, CustomerHomePage.class));
+                    startActivity(new Intent(Customer_MenuActivity.this, CustomerHomePage.class));
                     return true;
                 } else if (itemId == R.id.action_order_status) {
-                    startActivity(new Intent(MenuActivity.this, OrderStatusActivity.class));
+                    startActivity(new Intent(Customer_MenuActivity.this, Customer_OrderStatusActivity.class));
                     return true;
                 } else {
                     return false;
@@ -118,35 +118,35 @@ public class MenuActivity extends AppCompatActivity {
                                         @Override
                                         public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                                             // Create a temporary map to track current food items in Firestore
-                                            Map<String, Food> currentFoodMap = new HashMap<>();
+                                            Map<String, Customer_Food> currentFoodMap = new HashMap<>();
                                             if (error != null) {
-                                                Toast.makeText(MenuActivity.this, "Failed to load menu.", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(Customer_MenuActivity.this, "Failed to load menu.", Toast.LENGTH_SHORT).show();
                                                 return;
                                             }
 
                                             if (value != null) {
 
                                                 for (QueryDocumentSnapshot snapshot : value) {
-                                                    Food food = snapshot.toObject(Food.class);
-                                                    food.setId(snapshot.getId());
+                                                    Customer_Food customerFood = snapshot.toObject(Customer_Food.class);
+                                                    customerFood.setId(snapshot.getId());
                                                     // Check if the food item is in stock
-                                                    if (food.isInStock()) {
-                                                        currentFoodMap.put(food.getName(), food);
+                                                    if (customerFood.isInStock()) {
+                                                        currentFoodMap.put(customerFood.getName(), customerFood);
                                                         //Log.d("MenuActivity", "Food added: " + food.getName() + ", Price: " + food.getPrice());
                                                     } else {
-                                                        Log.d("MenuActivity", "Food not in stock: " + food.getName());
+                                                        Log.d("MenuActivity", "Food not in stock: " + customerFood.getName());
                                                     }
                                                 }
                                             }
 
                                             // Now update the foodList based on the current food map
-                                            foodList.clear(); // Clear the old list
-                                            foodList.addAll(currentFoodMap.values()); // Add the updated food list
-                                            if (foodList.isEmpty()) {
-                                                Toast.makeText(MenuActivity.this, "No items available.", Toast.LENGTH_SHORT).show();
+                                            customerFoodList.clear(); // Clear the old list
+                                            customerFoodList.addAll(currentFoodMap.values()); // Add the updated food list
+                                            if (customerFoodList.isEmpty()) {
+                                                Toast.makeText(Customer_MenuActivity.this, "No items available.", Toast.LENGTH_SHORT).show();
                                             }
 
-                                            foodAdapter.notifyDataSetChanged();
+                                            customerFoodAdapter.notifyDataSetChanged();
                                         }
                                     });
 //                        }
@@ -158,7 +158,7 @@ public class MenuActivity extends AppCompatActivity {
 
     // Show Order Summary when the button is clicked
     protected void showOrderSummary() {
-        Map<String, Integer> orderMap = foodAdapter.getOrderMap();
+        Map<String, Integer> orderMap = customerFoodAdapter.getOrderMap();
         if (orderMap.isEmpty()) {
             Toast.makeText(this, "No items selected", Toast.LENGTH_SHORT).show();
             return;
@@ -173,10 +173,10 @@ public class MenuActivity extends AppCompatActivity {
             int quantity = entry.getValue();
 
             // Find the food item by foodId and append to the summary
-            for (Food food : foodList) {
-                if(food.getName().equals(foodId)) {
+            for (Customer_Food customerFood : customerFoodList) {
+                if(customerFood.getName().equals(foodId)) {
                     orderSummary.append(foodId).append(": ").append(quantity).append("\n");
-                    totalPrice += food.getPrice() * quantity; // Calculate total price
+                    totalPrice += customerFood.getPrice() * quantity; // Calculate total price
                     break;
                 }
             }
@@ -193,8 +193,8 @@ public class MenuActivity extends AppCompatActivity {
                     saveOrderToFirestore(orderMap);
 
                     // Reset the order map to clear counts after confirmation
-                    foodAdapter.resetOrderMap(); // Call the method to reset the order map
-                    foodAdapter.notifyDataSetChanged(); // Notify the adapter of the change
+                    customerFoodAdapter.resetOrderMap(); // Call the method to reset the order map
+                    customerFoodAdapter.notifyDataSetChanged(); // Notify the adapter of the change
                 })
                 .setNegativeButton("Cancel", null) // Close dialog on cancel
                 .show();
@@ -215,11 +215,11 @@ public class MenuActivity extends AppCompatActivity {
         }
 
         // Create a new order object to hold the session-level data
-        Order order = new Order();
-        order.setTimestamp(System.currentTimeMillis()); // Set the current timestamp
-        order.setOrderStatus("Pending"); // Default order status
-        order.setSessionId(sessionId);
-        order.setTableNumber(tableNumber); // Set table number
+        Customer_Order customerOrder = new Customer_Order();
+        customerOrder.setTimestamp(System.currentTimeMillis()); // Set the current timestamp
+        customerOrder.setOrderStatus("Pending"); // Default order status
+        customerOrder.setSessionId(sessionId);
+        customerOrder.setTableNumber(tableNumber); // Set table number
 
         // Once the order is successfully created, save the food items under the 'foods' sub-collection
         saveFoodItemsToFirestore(sessionId, orderMap, tableNumber);
@@ -235,11 +235,11 @@ public class MenuActivity extends AppCompatActivity {
             String foodId = entry.getKey();  // This is the food ID
             int quantity = entry.getValue();  // This is the quantity ordered
             double price = 0;  // This is the price of the food
-            for(Food food : foodList)
+            for(Customer_Food customerFood : customerFoodList)
             {
-                if(food.getName().equals(foodId))
+                if(customerFood.getName().equals(foodId))
                 {
-                    price = food.getPrice();
+                    price = customerFood.getPrice();
                 }
             }
 

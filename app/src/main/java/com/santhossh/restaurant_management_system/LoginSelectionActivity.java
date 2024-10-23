@@ -36,7 +36,7 @@ public class LoginSelectionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Navigate to WorkerLoginActivity
-                Intent intent = new Intent(LoginSelectionActivity.this, LoginActivity1.class);
+                Intent intent = new Intent(LoginSelectionActivity.this, StaffLoginActivity.class);
                 startActivity(intent);
             }
         });

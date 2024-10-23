@@ -2,7 +2,7 @@ package com.santhossh.restaurant_management_system;
 
 import java.util.Map;
 
-public class Order {
+public class Customer_Order {
     private Map<String, Integer> items;  // Map of food IDs to quantities
     private long timestamp;  // Timestamp for when the order was placed
     private String orderStatus;  // Status of the order (e.g., "Pending", "In Progress", "Completed")
@@ -10,7 +10,7 @@ public class Order {
     private String sessionId;  // Unique session ID for the order
 
     // Default constructor
-    public Order() {
+    public Customer_Order() {
     }
 
     // Getters and Setters for all fields

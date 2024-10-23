@@ -1,6 +1,6 @@
 package com.santhossh.restaurant_management_system;
 
-public class FoodItem {
+public class ManagerFoodItem {
     private String id;
     private String name;
     private String description;
@@ -10,11 +10,11 @@ public class FoodItem {
     // New field for image URL
 
 
-    public FoodItem() {
+    public ManagerFoodItem() {
         // Empty constructor for Firebase
     }
 
-    public FoodItem(String id, String name, String description, double price, boolean inStock, String imageUrl) {
+    public ManagerFoodItem(String id, String name, String description, double price, boolean inStock, String imageUrl) {
         this.id = id;
         this.name = name;
         this.description = description;

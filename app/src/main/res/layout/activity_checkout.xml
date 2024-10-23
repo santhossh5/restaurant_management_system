@@ -92,7 +92,7 @@
     </LinearLayout>
 
 
-    <!-- RecyclerView for ordered food items -->
+    <!-- RecyclerView for ordered customerFood items -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_order_items"
         android:layout_width="match_parent"

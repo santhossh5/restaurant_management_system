@@ -24,10 +24,10 @@ import java.util.Map;
 public class orderAdapterChef extends RecyclerView.Adapter<orderAdapterChef.OrderViewHolder> {
 
     private Context context;
-    private List<Order> orderList;
+    private List<Customer_Order> orderList;
 
-    public orderAdapterChef(orderStatusActivityChef orderStatusActivity1, List<Order> orderList) {
-        this.context = context;
+    public orderAdapterChef(orderStatusActivityChef orderStatusActivity1, List<Customer_Order> orderList) {
+        this.context = orderStatusActivity1;
         this.orderList = orderList;
     }
 
@@ -38,10 +38,9 @@ public class orderAdapterChef extends RecyclerView.Adapter<orderAdapterChef.Orde
         return new OrderViewHolder(view);
     }
 
-    
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
-        Order order = orderList.get(position);
+        Customer_Order order = orderList.get(position);
 
         if (order != null) {
             holder.tableNumber.setText("Table Number: " + order.getTableNumber());
@@ -59,21 +58,24 @@ public class orderAdapterChef extends RecyclerView.Adapter<orderAdapterChef.Orde
             // Set checkbox state based on order status
             holder.checkboxReady.setChecked("Ready".equals(order.getOrderStatus()));
 
-            // Handle checkbox clicks to update order status
+            // Handle checkbox clicks to update order status and remove the order from the list
             holder.checkboxReady.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
                     // Update the status to "Ready" in the UI
                     holder.orderStatus.setText("Order Status: Ready");
                     order.setOrderStatus("Ready");
 
-                    // Optionally, update the status in the database
+                    // Update the status in the database without deleting the order
                     updateOrderStatusInDatabase(order);
+
+                    // Remove the order from the list and notify the adapter
+                    removeOrder(position);
                 } else {
                     // If unchecked, change back to "Pending" (if needed)
                     holder.orderStatus.setText("Order Status: Pending");
                     order.setOrderStatus("Pending");
 
-                    // Optionally, update the status in the database
+                    // Update the status in the database without deleting the order
                     updateOrderStatusInDatabase(order);
                 }
             });
@@ -82,20 +84,18 @@ public class orderAdapterChef extends RecyclerView.Adapter<orderAdapterChef.Orde
         }
     }
 
-    private void updateOrderStatusInDatabase(Order order) {
-        // Specify the document ID
-        String documentId = "oQNunJYjNaAQomaZ3COt";
-
-        // Update the order status in the database
+    private void updateOrderStatusInDatabase(Customer_Order order) {
+        // Update the order status in the database without deleting the order
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("santhossh")
-                .document(documentId)
+                .document("oQNunJYjNaAQomaZ3COt")
                 .collection("orders")
                 .document(order.getSessionId()) // Use the session ID of the order
                 .collection("foods")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        // Update only the order status field
                         document.getReference().update("orderStatus", order.getOrderStatus())
                                 .addOnSuccessListener(aVoid -> Log.d("OrderAdapter", "Order status updated successfully"))
                                 .addOnFailureListener(e -> Log.e("OrderAdapter", "Failed to update order status", e));
@@ -104,7 +104,14 @@ public class orderAdapterChef extends RecyclerView.Adapter<orderAdapterChef.Orde
                 .addOnFailureListener(e -> Log.e("OrderAdapter", "Error fetching order for update: " + e.getMessage(), e));
     }
 
+    private void removeOrder(int position) {
+        // Remove the order from the list
+        orderList.remove(position);
 
+        // Notify the adapter about the item removed
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, orderList.size());
+    }
 
     @Override
     public int getItemCount() {
@@ -132,6 +139,4 @@ public class orderAdapterChef extends RecyclerView.Adapter<orderAdapterChef.Orde
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
         return dateFormat.format(new Date(timestamp));
     }
-
 }
-

@@ -16,9 +16,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder> {
+public class ManagerMenuAdapter extends RecyclerView.Adapter<ManagerMenuAdapter.MenuViewHolder> {
 
-    private List<FoodItem> foodItemList;
+    private List<ManagerFoodItem> managerFoodItemList;
     private Map<String, Boolean> selectedItems = new HashMap<>();
     private OnCheckboxChangeListener onCheckboxChangeListener;
 
@@ -27,8 +27,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         void onCheckboxChange();
     }
 
-    public MenuAdapter(List<FoodItem> foodItemList, OnCheckboxChangeListener onCheckboxChangeListener) {
-        this.foodItemList = foodItemList;
+    public ManagerMenuAdapter(List<ManagerFoodItem> managerFoodItemList, OnCheckboxChangeListener onCheckboxChangeListener) {
+        this.managerFoodItemList = managerFoodItemList;
         this.onCheckboxChangeListener = onCheckboxChangeListener;
     }
 
@@ -36,38 +36,38 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
     @Override
     public MenuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_menu, parent, false);
+                .inflate(R.layout.manager_item_menu, parent, false);
         return new MenuViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MenuViewHolder holder, int position) {
-        FoodItem foodItem = foodItemList.get(position);
-        holder.tvItemName.setText(foodItem.getName());
-        holder.tvItemDescription.setText(foodItem.getDescription());
-        holder.tvItemPrice.setText(String.format("₹%.2f", foodItem.getPrice()));
-        holder.checkBoxInStock.setChecked(foodItem.isInStock());
+        ManagerFoodItem managerFoodItem = managerFoodItemList.get(position);
+        holder.tvItemName.setText(managerFoodItem.getName());
+        holder.tvItemDescription.setText(managerFoodItem.getDescription());
+        holder.tvItemPrice.setText(String.format("₹%.2f", managerFoodItem.getPrice()));
+        holder.checkBoxInStock.setChecked(managerFoodItem.isInStock());
 
         // Load image using Glide library
         Glide.with(holder.itemView.getContext())
-                .load(foodItem.getImageUrl()) // Image URL from the FoodItem object
+                .load(managerFoodItem.getImageUrl()) // Image URL from the FoodItem object
                 .placeholder(R.drawable.ic_food_placeholder) // Placeholder while loading
                 .into(holder.foodImageView); // Target ImageView
 
         // Ensure the checkbox reflects the selected items state
         holder.checkBoxInStock.setOnCheckedChangeListener(null); // Clear previous listener
-        holder.checkBoxInStock.setChecked(selectedItems.getOrDefault(foodItem.getId(), foodItem.isInStock()));
+        holder.checkBoxInStock.setChecked(selectedItems.getOrDefault(managerFoodItem.getId(), managerFoodItem.isInStock()));
 
         // Update selected items map based on checkbox state and notify listener
         holder.checkBoxInStock.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            selectedItems.put(foodItem.getId(), isChecked);
+            selectedItems.put(managerFoodItem.getId(), isChecked);
             onCheckboxChangeListener.onCheckboxChange(); // Notify that a checkbox was clicked
         });
     }
 
     @Override
     public int getItemCount() {
-        return foodItemList.size();
+        return managerFoodItemList.size();
     }
 
     // Expose selected items and their stock status

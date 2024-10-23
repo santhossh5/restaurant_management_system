@@ -20,7 +20,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CheckoutActivity extends AppCompatActivity {
+public class Customer_CheckoutActivity extends AppCompatActivity {
 
     private TextView textTotalAmount;
     private RecyclerView recyclerOrderItems;
@@ -62,9 +62,9 @@ public class CheckoutActivity extends AppCompatActivity {
 
         // Place order button click listener
         btnPlaceOrder.setOnClickListener(view -> {
-            Toast.makeText(CheckoutActivity.this, "Order placed successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Customer_CheckoutActivity.this, "Order placed successfully!", Toast.LENGTH_SHORT).show();
             // Handle checkout logic (e.g., update Firestore order status, etc.)
-            Intent intent = new Intent(CheckoutActivity.this, FeedbackActivity.class);
+            Intent intent = new Intent(Customer_CheckoutActivity.this, Customer_FeedbackActivity.class);
             startActivity(intent);
         });
     }
@@ -108,7 +108,7 @@ public class CheckoutActivity extends AppCompatActivity {
                     billAdapter.notifyDataSetChanged();
                 }
             } else {
-                Toast.makeText(CheckoutActivity.this, "Failed to fetch order items", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Customer_CheckoutActivity.this, "Failed to fetch order items", Toast.LENGTH_SHORT).show();
             }
         });
     }

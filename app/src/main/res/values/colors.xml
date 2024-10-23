@@ -28,4 +28,8 @@
     <color name="color3">#9D70ED</color>
     <color name="color4">#9D70ED</color>
 
+    <color name="light_purple">#E1BEE7</color>
+    <color name="dark_purple">#7B1FA2</color>
+    <color name="light_gray">#D3D3D3</color>
+
 </resources>

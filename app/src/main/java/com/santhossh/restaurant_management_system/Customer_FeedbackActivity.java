@@ -16,7 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FeedbackActivity extends AppCompatActivity {
+public class Customer_FeedbackActivity extends AppCompatActivity {
 
     private EditText editTextName, editTextFeedback;
     private RatingBar ratingBar;
@@ -71,15 +71,15 @@ public class FeedbackActivity extends AppCompatActivity {
         db.collection("feedback")
                 .add(feedbackData)
                 .addOnSuccessListener(documentReference -> {
-                    Toast.makeText(FeedbackActivity.this, "Thank you for your feedback!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Customer_FeedbackActivity.this, "Thank you for your feedback!", Toast.LENGTH_SHORT).show();
                     // Proceed to the next activity
-                    Intent intent = new Intent(FeedbackActivity.this, LoginSelectionActivity.class);
+                    Intent intent = new Intent(Customer_FeedbackActivity.this, LoginSelectionActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish(); // Finish the activity to prevent going back
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(FeedbackActivity.this, "Error submitting feedback", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Customer_FeedbackActivity.this, "Error submitting feedback", Toast.LENGTH_SHORT).show();
                 });
     }
 }
