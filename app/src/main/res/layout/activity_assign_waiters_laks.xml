@@ -1,0 +1,51 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- Toolbar for Assign Waiters page -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_assign_waiters"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:backgroundTint="#FF6750A4"
+        android:elevation="4dp">
+
+        <ImageView
+            android:id="@+id/toolbar_icon"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:src="@drawable/restaurant_logo"
+            android:layout_marginEnd="8dp" />
+
+        <TextView
+            android:id="@+id/toolbar_title_assign_waiters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Assign Waiters"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <!-- ListView to display tables -->
+    <ListView
+        android:id="@+id/listViewTables"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar_assign_waiters"
+        android:layout_marginTop="8dp">
+    </ListView>
+
+    <!-- Save Assignments Button -->
+    <Button
+        android:id="@+id/saveAssignmentsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Assignments"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp" />
+
+</RelativeLayout>

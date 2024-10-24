@@ -6,9 +6,9 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/restaurant_logo"
+        android:label="RMS"
+        android:roundIcon="@mipmap/restaurant_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Restaurant_management_system"
         tools:targetApi="31">
@@ -22,13 +22,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".CustomerHomePage"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".CustomerHomePage"/>
+<!--&lt;!&ndash;&lt;!&ndash;            android:exported="true">&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;            <intent-filter>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <action android:name="android.intent.action.MAIN" />&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                <category android:name="android.intent.category.LAUNCHER" />&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;            </intent-filter>&ndash;&gt;-->
+<!--        </activity>-->
         <activity android:name=".WorkerLoginPage"/>
         <activity android:name=".Customer_MenuActivity"/>
         <activity android:name=".TableNumberActivity"/>
